@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="380" viewBox="0 0 600 380" role="img" aria-labelledby="title">
+<title id="title">Guardian — live relief updates pulse out while each donation drops onto an open, traceable ledger.</title>
+<style>
+.d{font-family:'Arial Black','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900}
+.s{font-family:Georgia,'Times New Roman',serif;font-style:italic}
+.q{font-family:Georgia,'Times New Roman',serif}
+.t{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+.m{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace}.ping{opacity:0;animation:ping 7.2s infinite}
+@keyframes ping{0%,100%{opacity:0;transform:translateY(6px)}6%,30%{opacity:1;transform:none}38%{opacity:0;transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.ping{opacity:1}}</style>
+<defs>
+<clipPath id="frame"><rect width="600" height="380" rx="18"/></clipPath>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#12161f" flood-opacity=".22"/></filter>
+<filter id="lift" x="-20%" y="-40%" width="140%" height="200%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#12161f" flood-opacity=".18"/></filter>
+
+<pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#12161f" fill-opacity=".16"/></pattern>
+<clipPath id="row"><rect x="36" y="272" width="528" height="76"/></clipPath>
+</defs>
+<g clip-path="url(#frame)">
+<rect width="600" height="380" fill="#c4f16a"/>
+<rect width="600" height="380" fill="url(#dots)"/>
+<text x="34" y="66" class="s" font-size="38" fill="#12161f">Help,</text>
+<text x="34" y="106" class="s" font-size="38" fill="#12161f">in the open.</text>
+<circle cx="430" cy="118" r="8" fill="none" stroke="#f3562e" stroke-width="2" opacity="0"><animate attributeName="r" values="8;112" dur="3.6s" repeatCount="indefinite" begin="0s"/><animate attributeName="opacity" values="0.9;0" dur="3.6s" repeatCount="indefinite" begin="0s"/></circle><circle cx="430" cy="118" r="8" fill="none" stroke="#f3562e" stroke-width="2" opacity="0"><animate attributeName="r" values="8;112" dur="3.6s" repeatCount="indefinite" begin="1.2s"/><animate attributeName="opacity" values="0.9;0" dur="3.6s" repeatCount="indefinite" begin="1.2s"/></circle><circle cx="430" cy="118" r="8" fill="none" stroke="#f3562e" stroke-width="2" opacity="0"><animate attributeName="r" values="8;112" dur="3.6s" repeatCount="indefinite" begin="2.4s"/><animate attributeName="opacity" values="0.9;0" dur="3.6s" repeatCount="indefinite" begin="2.4s"/></circle>
+<circle cx="430" cy="118" r="13" fill="#f3562e" fill-opacity=".3"/>
+<circle cx="430" cy="118" r="7" fill="#f3562e"/>
+<g transform="translate(300 40)"><g class="ping" style="animation-delay:0s">
+  <rect y="-13" width="174.3" height="26" rx="13" fill="#fefcf7" filter="url(#lift)"/>
+  <circle cx="14" r="3.5" fill="#f3562e"/>
+  <text x="24" y="4" class="t" font-size="11" fill="#12161f">Shelter open · Sector 4</text></g></g><g transform="translate(410 186)"><g class="ping" style="animation-delay:2.4s">
+  <rect y="-13" width="162.1" height="26" rx="13" fill="#fefcf7" filter="url(#lift)"/>
+  <circle cx="14" r="3.5" fill="#f3562e"/>
+  <text x="24" y="4" class="t" font-size="11" fill="#12161f">Water needed · Ward 9</text></g></g><g transform="translate(180 176)"><g class="ping" style="animation-delay:4.8s">
+  <rect y="-13" width="149.9" height="26" rx="13" fill="#fefcf7" filter="url(#lift)"/>
+  <circle cx="14" r="3.5" fill="#f3562e"/>
+  <text x="24" y="4" class="t" font-size="11" fill="#12161f">Route clear · NH-48</text></g></g>
+<text x="36" y="262" class="t" font-size="10" font-weight="700" letter-spacing="1.5" fill="#12161f">OPEN LEDGER</text>
+<text x="564" y="262" text-anchor="end" class="t" font-size="10" font-weight="700" letter-spacing="1.5" fill="#12161f">EVERY DONATION, TRACEABLE</text>
+<g clip-path="url(#row)">
+  <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;-106 0;-106 0" dur="2.4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.04;.26;1" keySplines="0 0 1 1;.3 0 .2 1;0 0 1 1"/>
+    
+<g transform="translate(52 278)">
+  <line x1="-18" y1="32" x2="0" y2="32" stroke="#12161f" stroke-width="3"/>
+  <rect width="88" height="64" rx="9" fill="#fefcf7" stroke="#12161f" stroke-width="2.5"></rect>
+  <text x="11" y="23" class="d" font-size="13" fill="#12161f">BLOCK</text>
+  <g fill="#12161f" fill-opacity=".45"><rect x="11" y="31" width="8" height="5" rx="1.5"/><rect x="23" y="31" width="5" height="5" rx="1.5"/><rect x="35" y="31" width="9" height="5" rx="1.5"/><rect x="47" y="31" width="4" height="5" rx="1.5"/><rect x="59" y="31" width="7" height="5" rx="1.5"/></g>
+  <text x="11" y="53" class="t" font-size="10" font-weight="600" fill="#1f5ed9">verified ✓</text>
+</g>
+<g transform="translate(158 278)">
+  <line x1="-18" y1="32" x2="0" y2="32" stroke="#12161f" stroke-width="3"/>
+  <rect width="88" height="64" rx="9" fill="#fefcf7" stroke="#12161f" stroke-width="2.5"></rect>
+  <text x="11" y="23" class="d" font-size="13" fill="#12161f">BLOCK</text>
+  <g fill="#12161f" fill-opacity=".45"><rect x="11" y="31" width="8" height="5" rx="1.5"/><rect x="23" y="31" width="5" height="5" rx="1.5"/><rect x="35" y="31" width="9" height="5" rx="1.5"/><rect x="47" y="31" width="4" height="5" rx="1.5"/><rect x="59" y="31" width="7" height="5" rx="1.5"/></g>
+  <text x="11" y="53" class="t" font-size="10" font-weight="600" fill="#1f5ed9">verified ✓</text>
+</g>
+<g transform="translate(264 278)">
+  <line x1="-18" y1="32" x2="0" y2="32" stroke="#12161f" stroke-width="3"/>
+  <rect width="88" height="64" rx="9" fill="#fefcf7" stroke="#12161f" stroke-width="2.5"></rect>
+  <text x="11" y="23" class="d" font-size="13" fill="#12161f">BLOCK</text>
+  <g fill="#12161f" fill-opacity=".45"><rect x="11" y="31" width="8" height="5" rx="1.5"/><rect x="23" y="31" width="5" height="5" rx="1.5"/><rect x="35" y="31" width="9" height="5" rx="1.5"/><rect x="47" y="31" width="4" height="5" rx="1.5"/><rect x="59" y="31" width="7" height="5" rx="1.5"/></g>
+  <text x="11" y="53" class="t" font-size="10" font-weight="600" fill="#1f5ed9">verified ✓</text>
+</g>
+<g transform="translate(370 278)">
+  <line x1="-18" y1="32" x2="0" y2="32" stroke="#12161f" stroke-width="3"/>
+  <rect width="88" height="64" rx="9" fill="#fefcf7" stroke="#12161f" stroke-width="2.5"></rect>
+  <text x="11" y="23" class="d" font-size="13" fill="#12161f">BLOCK</text>
+  <g fill="#12161f" fill-opacity=".45"><rect x="11" y="31" width="8" height="5" rx="1.5"/><rect x="23" y="31" width="5" height="5" rx="1.5"/><rect x="35" y="31" width="9" height="5" rx="1.5"/><rect x="47" y="31" width="4" height="5" rx="1.5"/><rect x="59" y="31" width="7" height="5" rx="1.5"/></g>
+  <text x="11" y="53" class="t" font-size="10" font-weight="600" fill="#1f5ed9">verified ✓</text>
+</g>
+<g transform="translate(476 278)">
+  <line x1="-18" y1="32" x2="0" y2="32" stroke="#12161f" stroke-width="3"/>
+  <rect width="88" height="64" rx="9" fill="#fefcf7" stroke="#12161f" stroke-width="2.5"></rect>
+  <text x="11" y="23" class="d" font-size="13" fill="#12161f">BLOCK</text>
+  <g fill="#12161f" fill-opacity=".45"><rect x="11" y="31" width="8" height="5" rx="1.5"/><rect x="23" y="31" width="5" height="5" rx="1.5"/><rect x="35" y="31" width="9" height="5" rx="1.5"/><rect x="47" y="31" width="4" height="5" rx="1.5"/><rect x="59" y="31" width="7" height="5" rx="1.5"/></g>
+  <text x="11" y="53" class="t" font-size="10" font-weight="600" fill="#1f5ed9">verified ✓</text>
+</g>
+  </g>
+  <g opacity="0"><animate attributeName="opacity" values="0;0;1;1" dur="2.4s" repeatCount="indefinite" keyTimes="0;0.5;0.54;1"/>
+<g transform="translate(476 278)">
+  <line x1="-18" y1="32" x2="0" y2="32" stroke="#12161f" stroke-width="3"/>
+  <rect width="88" height="64" rx="9" fill="#fefcf7" stroke="#12161f" stroke-width="2.5"><animate attributeName="fill" values="#12161f;#12161f;#fefcf7" dur="2.4s" repeatCount="indefinite" keyTimes="0;.62;1"/></rect>
+  <text x="11" y="23" class="d" font-size="13" fill="#12161f">BLOCK<animate attributeName="fill" values="#fefcf7;#fefcf7;#12161f" dur="2.4s" repeatCount="indefinite" keyTimes="0;.62;1"/></text>
+  <g fill="#12161f" fill-opacity=".45"><rect x="11" y="31" width="8" height="5" rx="1.5"/><rect x="23" y="31" width="5" height="5" rx="1.5"/><rect x="35" y="31" width="9" height="5" rx="1.5"/><rect x="47" y="31" width="4" height="5" rx="1.5"/><rect x="59" y="31" width="7" height="5" rx="1.5"/><animate attributeName="fill" values="#fefcf7;#fefcf7;#12161f" dur="2.4s" repeatCount="indefinite" keyTimes="0;.62;1"/></g>
+  <text x="11" y="53" class="t" font-size="10" font-weight="600" fill="#c4f16a">verified ✓<animate attributeName="fill" values="#c4f16a;#c4f16a;#1f5ed9" dur="2.4s" repeatCount="indefinite" keyTimes="0;.62;1"/></text>
+</g></g>
+</g>
+<g opacity="0">
+  <animateTransform attributeName="transform" type="translate" values="160 120;160 120;520 310;520 310" dur="7.199999999999999s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.05;0.17;1" keySplines="0 0 1 1;.55 0 .85 .4;0 0 1 1"/>
+  <animate attributeName="opacity" values="0;0;1;1;0;0" dur="7.199999999999999s" repeatCount="indefinite" keyTimes="0;0.05;0.06;0.17;0.18;1"/>
+  <circle r="13" fill="#f3562e" stroke="#12161f" stroke-width="3"/>
+  <text y="5" text-anchor="middle" class="t" font-size="13" font-weight="800" fill="#fefcf7">Ξ</text></g><g opacity="0">
+  <animateTransform attributeName="transform" type="translate" values="330 120;330 120;520 310;520 310" dur="7.199999999999999s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.38;0.5;1" keySplines="0 0 1 1;.55 0 .85 .4;0 0 1 1"/>
+  <animate attributeName="opacity" values="0;0;1;1;0;0" dur="7.199999999999999s" repeatCount="indefinite" keyTimes="0;0.38;0.39;0.5;0.51;1"/>
+  <circle r="13" fill="#f3562e" stroke="#12161f" stroke-width="3"/>
+  <text y="5" text-anchor="middle" class="t" font-size="13" font-weight="800" fill="#fefcf7">Ξ</text></g><g opacity="0">
+  <animateTransform attributeName="transform" type="translate" values="240 120;240 120;520 310;520 310" dur="7.199999999999999s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.72;0.83;1" keySplines="0 0 1 1;.55 0 .85 .4;0 0 1 1"/>
+  <animate attributeName="opacity" values="0;0;1;1;0;0" dur="7.199999999999999s" repeatCount="indefinite" keyTimes="0;0.72;0.73;0.83;0.84;1"/>
+  <circle r="13" fill="#f3562e" stroke="#12161f" stroke-width="3"/>
+  <text y="5" text-anchor="middle" class="t" font-size="13" font-weight="800" fill="#fefcf7">Ξ</text></g></g>
+</svg>

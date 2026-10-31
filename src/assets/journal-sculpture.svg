@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+  <defs>
+    <radialGradient id="room" cx="52%" cy="32%" r="85%">
+      <stop offset="0" stop-color="#fdfcf9"/>
+      <stop offset=".55" stop-color="#f4f2ed"/>
+      <stop offset="1" stop-color="#e4e1da"/>
+    </radialGradient>
+    <linearGradient id="cove" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f4ef" stop-opacity="0"/>
+      <stop offset="1" stop-color="#e8e5de"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3d63ec"/>
+      <stop offset=".45" stop-color="#2346cc"/>
+      <stop offset="1" stop-color="#132f9a"/>
+    </linearGradient>
+    <linearGradient id="ribbonEdge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16308f"/>
+      <stop offset="1" stop-color="#0a1c5e"/>
+    </linearGradient>
+    <radialGradient id="sphere" cx="36%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#ffc3ad"/>
+      <stop offset=".28" stop-color="#ff7a4f"/>
+      <stop offset=".7" stop-color="#e2501f"/>
+      <stop offset="1" stop-color="#a83512"/>
+    </radialGradient>
+    <linearGradient id="prismFront" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dcff73"/>
+      <stop offset="1" stop-color="#a9d93a"/>
+    </linearGradient>
+    <linearGradient id="prismSide" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9bc92a"/>
+      <stop offset="1" stop-color="#76a116"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="26"/></filter>
+    <filter id="contact" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="sheen" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="glint" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter>
+  </defs>
+
+  <!-- Seamless studio sweep -->
+  <rect width="1536" height="1024" fill="url(#room)"/>
+  <rect y="560" width="1536" height="464" fill="url(#cove)"/>
+
+  <!-- Soft cast shadows -->
+  <ellipse cx="770" cy="812" rx="390" ry="46" fill="#1b2347" opacity=".16" filter="url(#soft)"/>
+  <ellipse cx="610" cy="808" rx="110" ry="18" fill="#3a1a10" opacity=".28" filter="url(#contact)"/>
+  <ellipse cx="1110" cy="810" rx="120" ry="16" fill="#28330a" opacity=".24" filter="url(#contact)"/>
+  <ellipse cx="860" cy="806" rx="150" ry="16" fill="#0b1640" opacity=".22" filter="url(#contact)"/>
+
+  <!-- Looping cobalt resin ribbon: dark edge, body, then specular sheen -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M420 790 C 360 600, 520 330, 760 350 C 1000 372, 1050 610, 880 700 C 730 778, 600 650, 680 520 C 750 410, 940 430, 1010 560 C 1060 650, 1060 760, 1180 795"
+          stroke="url(#ribbonEdge)" stroke-width="84"/>
+    <path d="M420 790 C 360 600, 520 330, 760 350 C 1000 372, 1050 610, 880 700 C 730 778, 600 650, 680 520 C 750 410, 940 430, 1010 560 C 1060 650, 1060 760, 1180 795"
+          stroke="url(#ribbon)" stroke-width="68"/>
+    <path d="M412 760 C 370 590, 520 350, 752 366 C 980 384, 1028 590, 878 676" transform="translate(-6 -14)"
+          stroke="#a9bcff" stroke-width="12" opacity=".55" filter="url(#sheen)"/>
+    <path d="M700 520 C 760 430, 920 448, 990 556" transform="translate(-4 -12)"
+          stroke="#c6d3ff" stroke-width="9" opacity=".6" filter="url(#sheen)"/>
+  </g>
+
+  <!-- Coral sphere resting in front of the loop -->
+  <circle cx="610" cy="706" r="98" fill="url(#sphere)"/>
+  <ellipse cx="578" cy="664" rx="30" ry="20" fill="#fff" opacity=".75" filter="url(#glint)"/>
+  <path d="M530 760 A 98 98 0 0 0 690 762" fill="none" stroke="#ff9a76" stroke-width="5" opacity=".45" filter="url(#glint)"/>
+
+  <!-- Lime geometric prism -->
+  <polygon points="1040,800 1180,800 1110,610" fill="url(#prismFront)"/>
+  <polygon points="1180,800 1250,768 1172,586 1110,610" fill="url(#prismSide)"/>
+  <polygon points="1110,610 1172,586 1180,594 1118,618" fill="#f0ffc0" opacity=".9"/>
+  <line x1="1110" y1="612" x2="1180" y2="800" stroke="#f4ffd0" stroke-width="3" opacity=".7"/>
+</svg>

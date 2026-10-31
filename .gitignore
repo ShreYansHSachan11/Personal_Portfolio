@@ -1,0 +1,13 @@
+node_modules
+dist
+*.tsbuildinfo
+.DS_Store
+
+# Local tool and editor state
+.claude/
+.tanstack/
+
+# Environment files (none are needed today; keep any future secrets out of git)
+.env
+.env.*
+!.env.example
