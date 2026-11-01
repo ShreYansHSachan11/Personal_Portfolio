@@ -2,14 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, Award, BadgeCheck, Code2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import journalImage from "@/assets/journal-sculpture.svg";
 import { achievements, education, experience, filterByCategory, POST_CATEGORIES, posts, PROJECT_CATEGORIES, projects, skillGroups, type Post } from "./content";
 import { ExternalLink } from "./ExternalLink";
 import { TiltCard } from "./Interactive";
 import { ProjectPreview } from "./ProjectPreview";
-
-export const JOURNAL_IMAGE = journalImage;
-export const JOURNAL_IMAGE_ALT = "Glossy blue ribbon sculpture with coral sphere and lime prism";
 
 const ACHIEVEMENT_ICONS = { award: Award, code: Code2, badge: BadgeCheck } as const;
 
@@ -151,30 +147,22 @@ export function SkillGroups() {
   );
 }
 
+/** Typographic cover: the essay's motif, large, with the author and year as a caption. */
 function JournalCover({ post }: { post: Post }) {
-  if (post.category === "Design") {
-    return <img src={JOURNAL_IMAGE} alt={JOURNAL_IMAGE_ALT} loading="lazy" width={1536} height={1024} />;
-  }
-  if (post.category === "Engineering") {
-    return (
-      <div className="code-art" aria-hidden>
-        <span className="text-accent">const</span> curiosity =<br />
-        <span className="pl-8 font-serif text-6xl italic">infinite;</span>
-        <div className="mt-5 text-sm text-secondary-foreground/60">{"// make something unexpected"}</div>
-      </div>
-    );
-  }
   return (
-    <div className="note-art" aria-hidden>
-      <span className="font-serif text-6xl italic">Make<br />small<br />things.</span>
-      <span className="note-star">✳</span>
+    <div className={`journal-mark mark-${post.slug}`} aria-hidden>
+      <span className="journal-mark-text">{post.mark}</span>
+      <span className="journal-mark-caption">{post.source ? `${post.source.author} · ${post.source.year}` : "Shreyansh Sachan"}</span>
     </div>
   );
 }
 
-export function JournalGrid({ filters = false }: { filters?: boolean }) {
+/** "Fred Brooks, 1986" for reading notes; the date for Shreyansh's own posts. */
+export const postByline = (post: Post) => (post.source ? `${post.source.author}, ${post.source.year}` : (post.date ?? ""));
+
+export function JournalGrid({ filters = false, limit }: { filters?: boolean; limit?: number }) {
   const [category, setCategory] = useState<(typeof POST_CATEGORIES)[number]>("All");
-  const selected = filterByCategory(posts, category);
+  const selected = filterByCategory(posts, category).slice(0, limit);
   return (
     <>
       {filters && (
@@ -188,13 +176,13 @@ export function JournalGrid({ filters = false }: { filters?: boolean }) {
               <span className="journal-cover-arrow" aria-hidden><ArrowUpRight className="size-5" /></span>
             </div>
             <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
-              <span>{p.category} / {p.date}</span>
+              <span>{p.category} / {postByline(p)}</span>
               <span>{p.minutes} min read</span>
             </div>
             <h3 className="mt-3 font-display text-2xl font-bold leading-snug group-hover:text-secondary">{p.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.excerpt}</p>
             <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold">
-              Read story <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+              {p.source ? "Read the takeaways" : "Read story"} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </span>
           </Link>
         ))}

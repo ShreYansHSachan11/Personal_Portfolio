@@ -1,6 +1,8 @@
+import type { Square } from "chess.js";
+
 /**
  * Shared, browser-safe portfolio content, sourced from Shreyansh Sachan's resume.
- * Journal posts remain sample writing (clearly labelled) until real articles are added.
+ * The journal currently holds reading notes on classic software essays (see `posts`).
  */
 
 export const profile = {
@@ -114,29 +116,99 @@ export const education = [
   { school: "St. Thomas School", detail: "High School (ICSE) · 87%", year: "2018", place: "Bhadohi" },
 ] as const;
 
-export const posts = [
-  { slug: "interfaces-that-feel-alive", title: "Interfaces that feel a little more alive", category: "Design", date: "Oct 24, 2026", minutes: 5, excerpt: "A few thoughts on motion, personality, and the small details that make software feel human.", theme: "secondary", sections: [
-    { title: "Start with the moment", text: "Before adding motion, ask what the person is doing. Opening a document, saving a thought, and exploring a new idea are different moments. Each deserves a different rhythm. An animation should acknowledge an action, explain a change, or make a relationship clearer." },
-    { title: "Personality is in the details", text: "A tiny shift in a button, a deliberate transition between views, or a little warmth in an empty state can carry more personality than an entire screen of decoration. The trick is restraint: choose one expressive detail and let the rest of the interface support it." },
-    { title: "Leave room for quiet", text: "Not everything needs to move. Stillness gives the meaningful moments contrast. Respect reduced-motion preferences, keep content readable, and make sure every interaction works just as well without its animation." },
-  ] },
-  { slug: "learning-three-js", title: "What building in 3D taught me about the web", category: "Engineering", date: "Oct 12, 2026", minutes: 7, excerpt: "Light, materials, and a whole new way to think about a browser canvas.", theme: "primary", sections: [
-    { title: "Light comes before detail", text: "A simple shape with thoughtful lighting often feels more convincing than a complex model with flat illumination. Start with a bright key light, a soft fill, and an environment that gives materials something to reflect." },
-    { title: "The browser is a real constraint", text: "Geometry, shadows, and resolution all have a cost. A scene should be built for the people who will use it, not just the machine it was created on. Keep object counts modest, reuse materials, and check the composition on a smaller screen early." },
-    { title: "Interaction is the point", text: "The web is not a rendered poster. Let a person turn the object, change a material, or discover a different perspective. Give the scene a purpose and keep the rest of the page accessible without WebGL." },
-  ] },
-  { slug: "building-small", title: "In praise of building small things", category: "Notes", date: "Sep 28, 2026", minutes: 3, excerpt: "Why side projects don't always need a roadmap, a pitch deck, or a grand plan.", theme: "accent", sections: [
-    { title: "A question is enough", text: "A small project can begin with curiosity rather than a business plan. What would a journal sound like? Could a chart become a place? How much can a single interaction communicate? These are perfectly good reasons to start." },
-    { title: "Finish one good loop", text: "Choose the central action and make it satisfying. Create, explore, save, or play. A project with one complete loop is more useful than a larger collection of disconnected promises." },
-    { title: "Keep the experiment", text: "Not every experiment becomes a product. Some become a lesson, a reusable technique, or the confidence to try something harder. That is a result worth keeping." },
-  ] },
-] as const;
+/**
+ * The journal. For now it holds reading notes on classic essays about software: each
+ * credits the original and links to it, and the summaries are written fresh, not quoted.
+ * Shreyansh's own posts can sit alongside them later: leave out `source` and give a `date`.
+ */
+export interface PostSection { title: string; text: string }
+export interface Post {
+  slug: string;
+  title: string;
+  category: PostCategory;
+  excerpt: string;
+  /** Reading time of these notes, not of the original. */
+  minutes: number;
+  theme: "primary" | "secondary" | "accent";
+  /** Short typographic motif drawn on the card cover. */
+  mark: string;
+  /** Present on reading notes: who wrote the original, when, and where to read it. */
+  source?: { author: string; year: number; url: string };
+  /** Publication date for Shreyansh's own posts. */
+  date?: string;
+  sections: readonly PostSection[];
+}
+
+export const POST_CATEGORIES = ["All", "Engineering", "Design", "Process"] as const;
+export type PostCategory = Exclude<(typeof POST_CATEGORIES)[number], "All">;
+
+export const posts: readonly Post[] = [
+  {
+    slug: "no-silver-bullet", title: "No Silver Bullet", category: "Engineering", minutes: 4, theme: "secondary", mark: "×10?",
+    source: { author: "Fred Brooks", year: 1986, url: "https://www.cs.unc.edu/techreports/86-020.pdf" },
+    excerpt: "Why no single tool will ever make software ten times easier to build, and what actually helps.",
+    sections: [
+      { title: "The argument", text: "Brooks splits the difficulty of software into two kinds. Accidental difficulty comes from our tools: slow machines, clumsy languages, awkward workflows. Essential difficulty comes from the problem itself. Software is complex, has to conform to a messy world, keeps changing, and can't be seen or drawn the way a building can. Past breakthroughs like high-level languages and time-sharing mostly removed accidental difficulty, so he predicted that no single technique would bring a tenfold gain within a decade." },
+      { title: "What he thought would help", text: "Rather than a magic tool, he pointed to steady, compounding habits: buy software instead of building it when you can, use prototypes to discover what people really need, grow a system incrementally so it always runs, and invest in great designers, because the gap between good and great design is enormous." },
+      { title: "My takeaway", text: "Every new framework promises to make things easy, and it usually does make the accidental parts easier. The hard part is still understanding the problem well enough to model it. When a project feels slow, I now ask which kind of difficulty I'm fighting before reaching for a new tool." },
+    ],
+  },
+  {
+    slug: "go-to-considered-harmful", title: "Go To Statement Considered Harmful", category: "Engineering", minutes: 3, theme: "primary", mark: "goto",
+    source: { author: "Edsger W. Dijkstra", year: 1968, url: "https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD215.html" },
+    excerpt: "A one-page letter that changed how we write code, and why it's really about reasoning, not keywords.",
+    sections: [
+      { title: "The argument", text: "Dijkstra's point is that our minds are good at understanding static text and bad at tracking a process unfolding over time. So code should make the running program easy to picture from the written one. With loops, conditionals and procedure calls you can always say where you are in the execution. Jumping anywhere with go to destroys that, and the program's behaviour becomes hard to reason about." },
+      { title: "Why it lasted", text: "The famous title was added by the journal's editor, and it started a whole genre of \"considered harmful\" essays. The underlying idea won so completely that structured control flow is now simply how programming languages work." },
+      { title: "My takeaway", text: "The same principle applies long after go to disappeared. Deeply nested callbacks, scattered global state and event listeners that change things from far away make it hard to see what happens when. I try to write code whose order on the screen matches the order things happen at runtime." },
+    ],
+  },
+  {
+    slug: "things-you-should-never-do", title: "Things You Should Never Do, Part I", category: "Process", minutes: 3, theme: "accent", mark: "rm -rf",
+    source: { author: "Joel Spolsky", year: 2000, url: "https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/" },
+    excerpt: "The case against rewriting working software from scratch, told through Netscape's costly mistake.",
+    sections: [
+      { title: "The argument", text: "Spolsky calls throwing away a working codebase to start over the single worst strategic mistake a software company can make, using Netscape's long rewrite of its browser as the example. Developers want to rewrite because reading code is harder than writing it, so old code always looks worse than it is. But the ugly parts are often bug fixes for real situations someone already ran into, and a rewrite throws that knowledge away." },
+      { title: "What to do instead", text: "Improve the code you have: refactor the confusing parts, untangle the architecture piece by piece, and speed up the slow paths. You keep shipping the whole time, and you keep every lesson the old code learned." },
+      { title: "My takeaway", text: "When I join a codebase and something looks strange, I assume it's there for a reason until I can prove otherwise. Small, steady refactors have nearly always beaten my urge to start again." },
+    ],
+  },
+  {
+    slug: "makers-schedule", title: "Maker's Schedule, Manager's Schedule", category: "Process", minutes: 3, theme: "secondary", mark: "9→5",
+    source: { author: "Paul Graham", year: 2009, url: "https://paulgraham.com/makersschedule.html" },
+    excerpt: "Why a single meeting can wreck a programmer's afternoon, and how to plan around it.",
+    sections: [
+      { title: "The argument", text: "Managers divide the day into one-hour slots, and a meeting is just one more slot to fill. People who make things, like programmers and writers, need long uninterrupted stretches, often half a day, to get anything substantial done. For them, one meeting in the middle of the afternoon breaks it into two pieces too small for hard work." },
+      { title: "The fix he suggests", text: "Graham describes keeping meetings to the end of the day, like office hours, so the productive part of the day stays whole. More broadly, makers and managers should each understand that the other is working to a different clock." },
+      { title: "My takeaway", text: "I protect focus blocks in my calendar and try to batch calls together. When I schedule time with other engineers, I aim for the edges of their day, not the middle." },
+    ],
+  },
+  {
+    slug: "worse-is-better", title: "Worse Is Better", category: "Engineering", minutes: 3, theme: "primary", mark: "≤",
+    source: { author: "Richard P. Gabriel", year: 1991, url: "https://www.dreamsongs.com/WorseIsBetter.html" },
+    excerpt: "Why simple, slightly wrong software often beats the perfect design, and spreads further.",
+    sections: [
+      { title: "The argument", text: "Gabriel contrasts two design philosophies. \"The right thing\" insists on correctness, consistency and completeness, even if the implementation gets complicated. \"Worse is better\" puts simplicity of implementation first and accepts some rough edges in the interface. He argues that the second approach, embodied by Unix and C, tends to win: simple systems are easier to port, ship sooner, and spread, and then improve over time." },
+      { title: "The twist", text: "Gabriel himself came from the right-thing school, and spent years arguing with his own essay. That's part of why it's still read: it's an honest description of a trade-off, not a slogan." },
+      { title: "My takeaway", text: "A working, simple version in people's hands teaches you more than a perfect design on a whiteboard. I try to ship the smallest thing that's genuinely useful, then let real use tell me where it needs to be better." },
+    ],
+  },
+  {
+    slug: "magic-ink", title: "Magic Ink", category: "Design", minutes: 4, theme: "accent", mark: "ink",
+    source: { author: "Bret Victor", year: 2006, url: "https://worrydream.com/MagicInk/" },
+    excerpt: "Most software is for learning things, not doing things. Design it more like a great infographic.",
+    sections: [
+      { title: "The argument", text: "Victor observes that most software exists to help people learn something: when the next train leaves, which movie to see, what the weather will do. He calls this information software and argues it should be designed like good graphic design, showing the answer clearly rather than making people click through menus and forms to get it." },
+      { title: "Interaction as a cost", text: "In his view, every bit of interaction asks the user to do work the software could have done. Good information software uses context instead: the time, the location, what the person looked at before. That way it can show the most likely answer straight away." },
+      { title: "My takeaway", text: "Before adding a filter, a dropdown or another button, I ask whether the screen could simply show what the person most likely wants. The best interfaces I've built usually have fewer controls than the first draft." },
+    ],
+  },
+];
+
 
 export type Project = (typeof projects)[number];
-export type Post = (typeof posts)[number];
 
 export const PROJECT_CATEGORIES = ["All", "AI", "Web3", "Backend"] as const;
-export const POST_CATEGORIES = ["All", "Design", "Engineering", "Notes"] as const;
 
 export function filterByCategory<T extends { category: string }>(items: readonly T[], category: string): T[] {
   return items.filter((item) => category === "All" || item.category === category);
@@ -144,3 +216,89 @@ export function filterByCategory<T extends { category: string }>(items: readonly
 
 export const findProject = (slug: string) => projects.find((p) => p.slug === slug);
 export const findPost = (slug: string) => posts.find((p) => p.slug === slug);
+
+/**
+ * "What I'm into" cards in the hero card holder.
+ * These lists are SAMPLE picks until Shreyansh fills in his real ones; while `sample`
+ * is true the panel says so, so nothing reads as a real claim. Edit freely: each list
+ * needs 3–6 items. The chess card is a playable mate-in-one: `fen` is the position
+ * (White to move) and `solution` the one mating move; the tests check both. Its
+ * chess.com stats load live in the browser; `snapshot` is shown first and kept if
+ * chess.com is unreachable.
+ * Book, song and movie covers are looked up by title: run `npm run covers` after editing
+ * these lists to refresh src/components/portfolio/hero/covers.ts.
+ */
+export type InterestTone = "card" | "pink" | "accent" | "primary";
+export interface InterestItem { title: string; meta: string }
+export interface ChessStats {
+  rapid: number | null;
+  puzzles: number | null;
+  games: number;
+  league: string | null;
+  avatar: string | null;
+}
+interface InterestBase {
+  label: string;
+  tagline: string;
+  tone: InterestTone;
+  sample: boolean;
+}
+export type Interest = InterestBase & (
+  | {
+      kind: "chess";
+      fen: string;
+      /** The one mating move; the tests check it with chess.js. `from` doubles as the hint. */
+      solution: { from: Square; to: Square };
+      solvedCaption: string;
+      chessCom: { username: string; snapshot: ChessStats };
+    }
+  | { kind: "music" | "books" | "movies"; items: readonly InterestItem[] }
+);
+export type InterestKind = Interest["kind"];
+
+export const interests: readonly Interest[] = [
+  {
+    kind: "chess", label: "Chess", tagline: "your move. mate in one?", tone: "card", sample: false,
+    // Scholar's mate: Qxf7# is the only mating move (Bxf7+ is check, but Ke7 escapes).
+    fen: "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
+    solution: { from: "h5", to: "f7" },
+    solvedCaption: "Qxf7#, the Scholar's mate. The first trap everyone falls for once.",
+    chessCom: {
+      username: "shreyansh_sachan",
+      // From api.chess.com on 2 Nov 2026; replaced by live numbers when the panel opens.
+      snapshot: {
+        rapid: 756, puzzles: 1640, games: 2058, league: "Champion",
+        avatar: "https://images.chesscomfiles.com/uploads/v1/user/176441593.ac978c37.200x200o.5b5c1e03e387.jpg",
+      },
+    },
+  },
+  {
+    kind: "music", label: "Music", tagline: "what's in my headphones while I code.", tone: "pink", sample: true,
+    items: [
+      { title: "Blinding Lights", meta: "The Weeknd" },
+      { title: "Kesariya", meta: "Arijit Singh" },
+      { title: "Do I Wanna Know?", meta: "Arctic Monkeys" },
+      { title: "Time", meta: "Hans Zimmer" },
+      { title: "Sunflower", meta: "Post Malone & Swae Lee" },
+    ],
+  },
+  {
+    kind: "books", label: "Books", tagline: "pages that changed how I think.", tone: "accent", sample: false,
+    items: [
+      { title: "The Myth of Sisyphus", meta: "Albert Camus" },
+      { title: "Crime and Punishment", meta: "Fyodor Dostoevsky" },
+      { title: "Siddhartha", meta: "Hermann Hesse" },
+      { title: "The Pragmatic Programmer", meta: "Hunt & Thomas" },
+      { title: "Sapiens", meta: "Yuval Noah Harari" },
+    ],
+  },
+  {
+    kind: "movies", label: "Movies", tagline: "stories I'd happily watch again.", tone: "primary", sample: true,
+    items: [
+      { title: "Interstellar", meta: "2014" },
+      { title: "3 Idiots", meta: "2009" },
+      { title: "The Dark Knight", meta: "2008" },
+      { title: "Barfi!", meta: "2012" },
+    ],
+  },
+];

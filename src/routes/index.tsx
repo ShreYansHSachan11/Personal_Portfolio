@@ -10,7 +10,7 @@ import { skills } from "@/components/portfolio/content";
 import { Button } from "@/components/ui/button";
 import { pageMeta } from "@/lib/meta";
 
-const HeroBlob = lazy(() => import("@/components/portfolio/HeroBlob"));
+const HeroCards = lazy(() => import("@/components/portfolio/hero/HeroCards"));
 
 export const Route = createFileRoute("/")({
   head: () =>
@@ -61,7 +61,7 @@ function Index() {
         <div className="hero-scene">
           <ClientOnly fallback={sceneFallback}>
             <SceneBoundary>
-              <Suspense fallback={sceneFallback}><HeroBlob /></Suspense>
+              <Suspense fallback={sceneFallback}><HeroCards /></Suspense>
             </SceneBoundary>
           </ClientOnly>
         </div>
@@ -131,8 +131,8 @@ function Index() {
       </section>
 
       <section className="relative z-10 mx-auto max-w-6xl px-6 py-24 md:py-32">
-        <SectionTitle number="04" title="Notes from" accent="the studio." to="/blog" label="The journal" />
-        <JournalGrid />
+        <SectionTitle number="04" eyebrow="WHAT I'M READING" title="Notes from" accent="the classics." to="/blog" label="The journal" />
+        <JournalGrid limit={3} />
       </section>
 
       <section id="play" className="relative z-10 mx-auto max-w-6xl px-6 pb-24">

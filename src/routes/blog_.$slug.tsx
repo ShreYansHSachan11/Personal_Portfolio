@@ -1,9 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Check, Copy } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { findPost } from "@/components/portfolio/content";
 import { PageShell } from "@/components/portfolio/PortfolioChrome";
-import { JOURNAL_IMAGE, JOURNAL_IMAGE_ALT } from "@/components/portfolio/Showcase";
+import { postByline } from "@/components/portfolio/Showcase";
 import { Button } from "@/components/ui/button";
 import { pageMeta } from "@/lib/meta";
 
@@ -18,7 +18,11 @@ export const Route = createFileRoute("/blog_/$slug")({
   },
   head: ({ loaderData }) =>
     loaderData
-      ? pageMeta({ title: `${loaderData.title} — Shreyansh Sachan`, description: loaderData.excerpt, type: "article" })
+      ? pageMeta({
+          title: loaderData.source ? `${loaderData.title} (${loaderData.source.author}): reading notes — Shreyansh Sachan` : `${loaderData.title} — Shreyansh Sachan`,
+          description: loaderData.excerpt,
+          type: "article",
+        })
       : pageMeta({ title: "Story unavailable — Shreyansh Sachan", description: "This story is unavailable.", type: "article" }),
   component: Article,
 });
@@ -56,28 +60,42 @@ function Article() {
           <Link to="/blog"><ArrowLeft /> The journal</Link>
         </Button>
         <div className="mb-5 flex gap-4 text-xs text-muted-foreground">
-          <span>{post.category}</span><span>{post.date}</span><span>{post.minutes} min read</span>
+          <span>{post.category}</span><span>{postByline(post)}</span><span>{post.minutes} min read</span>
         </div>
         <h1 className="font-display text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl">{post.title}</h1>
         <p className="mt-6 max-w-xl text-lg text-muted-foreground">{post.excerpt}</p>
         <div className="my-8 flex items-center justify-between border-y border-border py-4">
           <div className="flex items-center gap-3">
             <span aria-hidden className="flex size-10 items-center justify-center rounded-full bg-accent font-display font-bold">s.</span>
-            <div className="text-sm">Shreyansh <p className="text-xs text-muted-foreground">Sample journal entry</p></div>
+            <div className="text-sm">
+              Shreyansh
+              <p className="text-xs text-muted-foreground">{post.source ? `Reading notes on ${post.source.author}'s essay` : post.date}</p>
+            </div>
           </div>
-          <Button variant="outline" onClick={share} aria-label={copied ? "Article link copied" : "Copy article link"}>
-            {copied ? <Check /> : <Copy />}<span>{copied ? "Copied" : "Share"}</span>
-          </Button>
+          <div className="flex flex-wrap justify-end gap-2">
+            {post.source && (
+              <Button asChild>
+                <a href={post.source.url} target="_blank" rel="noreferrer">Read the original<ArrowUpRight /></a>
+              </Button>
+            )}
+            <Button variant="outline" onClick={share} aria-label={copied ? "Article link copied" : "Copy article link"}>
+              {copied ? <Check /> : <Copy />}<span>{copied ? "Copied" : "Share"}</span>
+            </Button>
+          </div>
         </div>
         <p role="status" className="mb-5 text-sm text-muted-foreground empty:hidden">
           {state === "failed" ? "Copy the page address from your browser to share this story." : ""}
         </p>
-        {post.category === "Design" && (
-          <img src={JOURNAL_IMAGE} alt={JOURNAL_IMAGE_ALT} width={1536} height={1024} className="mb-12 aspect-[1.8] w-full rounded-lg object-cover" />
-        )}
         <div className="article-body mx-auto max-w-2xl">
           {post.sections.map((s) => <section key={s.title}><h2>{s.title}</h2><p>{s.text}</p></section>)}
-          <p className="border-t border-border pt-6 font-serif italic">Keep making things. Keep asking questions.</p>
+          {post.source ? (
+            <p className="border-t border-border pt-6 font-serif italic">
+              These are my notes. The original is short and well worth reading in full:{" "}
+              <a href={post.source.url} target="_blank" rel="noreferrer" className="underline decoration-primary underline-offset-4">{post.title}, {post.source.author} ({post.source.year})</a>.
+            </p>
+          ) : (
+            <p className="border-t border-border pt-6 font-serif italic">Keep making things. Keep asking questions.</p>
+          )}
         </div>
         <Button asChild variant="link" className="mt-10 px-0 text-foreground">
           <Link to="/blog"><ArrowLeft /> More from the journal</Link>

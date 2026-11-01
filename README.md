@@ -47,7 +47,7 @@ with a slow autopilot when idle and full `prefers-reduced-motion` support. The m
 ## Content
 
 All content lives in `src/components/portfolio/content.ts` and comes from Shreyansh's resume: profile links,
-experience, projects (with live demo and GitHub links), achievements, skills and education. Journal posts are
-still sample writing and are labelled as such; replace them with real articles. Project artwork in
-`ProjectPreview.tsx` is decorative illustration, not screenshots. `src/assets/journal-sculpture.svg` is a stand-in
-illustration for the Design story cover.
+experience, projects (with live demo and GitHub links), achievements, skills and education. The journal holds
+reading notes on classic software essays: each credits the author and links to the original, and the summaries
+are original writing, not quotes. To add your own post, add an entry to `posts` without `source` and with a
+`date`. Project artwork in `ProjectPreview.tsx` is decorative illustration, not screenshots.

@@ -16,7 +16,7 @@ export class SceneBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("[HeroBlob] 3D scene failed to render", error, info.componentStack);
+    console.error("[HeroCards] 3D scene failed to render", error, info.componentStack);
   }
 
   render() {
