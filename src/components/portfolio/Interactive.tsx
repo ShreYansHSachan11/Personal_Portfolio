@@ -85,34 +85,60 @@ export function FlowLine() {
     // getTotalLength() is in the stretched 1000×4000 viewBox units. Measure the on-screen
     // length instead, or the dash runs out partway down tall pages and the line never finishes.
     const userLength = p.getTotalLength();
-    const samples = Array.from({ length: 401 }, (_, i) => p.getPointAtLength((userLength * i) / 400));
-    const measureLength = () => {
-      const { width, height } = svg.getBoundingClientRect();
+    const samples = Array.from({ length: 801 }, (_, i) => p.getPointAtLength((userLength * i) / 800));
+    // Running max of y, so the lookup below stays monotonic even where a curve doubles back.
+    const ys: number[] = [];
+    let maxY = 0;
+    for (const s of samples) ys.push((maxY = Math.max(maxY, s.y)));
+    // Screen-pixel length from the start of the path to each sample.
+    const cum = new Float64Array(samples.length);
+    const measureLength = (width: number, height: number) => {
       const key = `${width}x${height}`;
       if (key === size) return;
       size = key;
       const sx = width / 1000;
       const sy = height / 4000;
-      len = 0;
       for (let i = 1; i < samples.length; i++) {
         const a = samples[i - 1];
         const b = samples[i];
-        if (a && b) len += Math.hypot((b.x - a.x) * sx, (b.y - a.y) * sy);
+        cum[i] = (cum[i - 1] ?? 0) + (a && b ? Math.hypot((b.x - a.x) * sx, (b.y - a.y) * sy) : 0);
       }
+      len = cum[samples.length - 1] ?? 0;
       p.style.strokeDasharray = `${len} ${len}`;
     };
+    // Length of path drawn down to viewBox height y.
+    const lengthAt = (y: number) => {
+      let lo = 0;
+      let hi = ys.length - 1;
+      if (y <= (ys[0] ?? 0)) return 0;
+      if (y >= (ys[hi] ?? 0)) return len;
+      while (hi - lo > 1) {
+        const mid = (lo + hi) >> 1;
+        if ((ys[mid] ?? 0) < y) lo = mid;
+        else hi = mid;
+      }
+      const y0 = ys[lo] ?? 0;
+      const y1 = ys[hi] ?? 0;
+      const f = y1 > y0 ? (y - y0) / (y1 - y0) : 0;
+      return (cum[lo] ?? 0) + ((cum[hi] ?? 0) - (cum[lo] ?? 0)) * f;
+    };
     const measure = () => {
-      measureLength();
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const t = Math.min(1, window.scrollY / Math.max(1, max));
-      target = Math.min(1, t * 1.1 + 0.08);
+      const rect = svg.getBoundingClientRect();
+      measureLength(rect.width, rect.height);
+      // Keep the tip of the line at a fixed spot in the viewport, so it moves exactly with the scroll.
+      // Over the last screenful the anchor slides to the bottom edge, so the line finishes at the page end.
+      const remaining = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      const anchor = 0.6 + 0.4 * Math.max(0, 1 - remaining / window.innerHeight);
+      const tipY = window.innerHeight * anchor - rect.top;
+      target = lengthAt((tipY / Math.max(1, rect.height)) * 4000);
     };
     const draw = () => {
       frame = 0;
-      current = reduced.matches ? 1 : current + (target - current) * 0.09;
-      p.style.strokeDashoffset = `${len * (1 - current)}`;
+      // A light ease smooths wheel steps without letting the line lag behind the page.
+      current = reduced.matches ? len : current + (target - current) * 0.25;
+      p.style.strokeDashoffset = `${len - current}`;
       // Keep easing until we arrive, then sleep until the next scroll/resize.
-      if (!reduced.matches && Math.abs(target - current) > 0.0005) frame = requestAnimationFrame(draw);
+      if (!reduced.matches && Math.abs(target - current) > 0.5) frame = requestAnimationFrame(draw);
     };
     const update = () => {
       measure();
