@@ -1,6 +1,6 @@
 import { ClientOnly, createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { CursorBlob, FlowLine, Magnetic } from "@/components/portfolio/Interactive";
 import { ContactBand, PortfolioNav } from "@/components/portfolio/PortfolioChrome";
 import { RicochetPlayground } from "@/components/portfolio/RicochetPlayground";
@@ -44,15 +44,31 @@ function SectionTitle({ number, title, accent, to, label, eyebrow }: {
 const sceneFallback = <div className="sculpture-loading" />;
 
 function Index() {
+  const mainRef = useRef<HTMLElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
+
+  // On phones the hero stacks into one narrow column, so the thread would run straight through the
+  // headline. Expose where the hero ends; CSS starts the thread there on small screens.
+  useEffect(() => {
+    const main = mainRef.current;
+    const hero = heroRef.current;
+    if (!main || !hero) return;
+    const observer = new ResizeObserver(() => {
+      main.style.setProperty("--hero-end", `${hero.offsetTop + hero.offsetHeight}px`);
+    });
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <main className="grain portfolio-flow relative overflow-x-hidden">
+    <main ref={mainRef} className="grain portfolio-flow relative overflow-x-hidden">
       <PortfolioNav />
       <ClientOnly><CursorBlob /></ClientOnly>
       <div className="flow-trail pointer-events-none absolute inset-0">
         <ClientOnly><FlowLine /></ClientOnly>
       </div>
 
-      <section className="portfolio-hero relative mx-auto max-w-7xl px-6">
+      <section ref={heroRef} className="portfolio-hero relative mx-auto max-w-7xl px-6">
         <div className="hero-scene">
           <ClientOnly fallback={sceneFallback}>
             <SceneBoundary>
@@ -65,9 +81,11 @@ function Index() {
             <span aria-hidden className="h-2 w-2 rounded-full bg-primary" /> FRONTEND DEVELOPER @ PINNTAG
           </p>
           <h1 className="font-display font-extrabold leading-[.98]">
-            Shreyansh<span className="text-primary">.</span><br />
-            <span className="font-serif font-normal italic text-secondary">Code meets</span><br />
-            curiosity.
+            Shreyansh<br />
+            Sachan<span className="text-primary">.</span>
+            <span className="hero-tagline mt-4 block font-serif font-normal italic leading-tight text-secondary">
+              Code meets <span className="text-foreground">curiosity.</span>
+            </span>
           </h1>
           <p className="hero-intro mt-6 max-w-sm text-base leading-relaxed text-muted-foreground">
             I build fast, thoughtful React products — right now, real-time promotions at Pinntag — with a soft spot for AI, RAG pipelines and the occasional “what if?”

@@ -141,11 +141,13 @@
 .portfolio-nav { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 40; width: min(92%, 900px); height: 66px; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--glass-border); border-radius: 999px; background: var(--glass-surface); backdrop-filter: blur(20px) saturate(150%); box-shadow: var(--shadow-glass); }
 .skills-ribbon { transform: rotate(-2deg); width: calc(100% + 40px); margin-left: -20px; }
 .flow-trail { opacity: .72; }
+@media (max-width: 767px) { .flow-trail { top: var(--hero-end, 0px); } }
 .portfolio-flow .contact-band { z-index: 10; background: transparent; }
 .ricochet-board { aspect-ratio: 840 / 460; }
 .ricochet-board canvas:focus-visible { outline: 3px solid var(--secondary); outline-offset: -5px; }
 .portfolio-hero { min-height: 750px; height: min(900px, 92svh); padding-top: 170px; padding-bottom: 110px; }
 .hero-copy { width: 52%; }
+.hero-tagline { font-size: .5em; }
 .hero-scene { position: absolute; inset: 75px -35px 100px 36%; }
 .tone-card { --tone: var(--card); --tone-ink: var(--foreground); }
 .tone-pink { --tone: var(--pink); --tone-ink: var(--foreground); }
