@@ -88,7 +88,7 @@ function Index() {
             </span>
           </h1>
           <p className="hero-intro mt-6 max-w-sm text-base leading-relaxed text-muted-foreground">
-            I build fast, thoughtful React products — right now, real-time promotions at Pinntag — with a soft spot for AI, RAG pipelines and the occasional “what if?”
+            I build fast, thoughtful React products. Right now that’s real-time promotions at Pinntag. I also have a soft spot for AI, RAG pipelines and the occasional “what if?”
           </p>
           <div className="pointer-events-auto mt-8 flex items-center gap-6">
             <Magnetic>

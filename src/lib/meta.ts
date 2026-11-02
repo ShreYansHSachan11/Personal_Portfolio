@@ -10,7 +10,7 @@ import { posts, projects } from "../components/portfolio/content";
 
 export const SITE_URL = "https://shreyanshsachan-portfolio.vercel.app";
 export const SITE_NAME = "Shreyansh Sachan";
-const OG_IMAGE = { url: `${SITE_URL}/og.png`, width: 1200, height: 630, alt: "Shreyansh Sachan, frontend developer: code meets curiosity." };
+const OG_IMAGE = { url: `${SITE_URL}/og.png?v=2`, width: 1200, height: 630, alt: "Shreyansh Sachan, frontend developer: code meets curiosity." };
 
 export interface PageMeta {
   /** Site-relative path, e.g. "/work/sherlock". Used for the canonical and og:url. */
@@ -53,7 +53,7 @@ export function pageMeta({ path, title, description, ogTitle = title, ogDescript
 export const pages = {
   home: {
     path: "/",
-    title: "Shreyansh Sachan — Frontend & full-stack developer",
+    title: "Shreyansh Sachan - Portfolio",
     description: "Portfolio of Shreyansh Sachan, a frontend developer building React products, AI-powered tools and real-time web apps.",
     ogDescription: "React, Node.js and AI projects — Sherlock, NextHire, Guardian and more. Come say hello.",
   },
