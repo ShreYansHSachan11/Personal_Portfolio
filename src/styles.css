@@ -410,7 +410,10 @@
 /* Small laptops: keep the folder clear of the headline. */
 @media (min-width: 1024px) and (max-width: 1279px) { .hero-scene { left: 50%; } }
 @media (max-width: 1023px) and (min-width: 768px) { .hero-copy h1 { font-size: 52px; } }
-@media (max-width: 767px) { .hero-copy h1 { font-size: 40px; }.portfolio-hero { min-height: 1010px; }.hero-copy>p:first-child { font-size: 10px; }.hero-copy>div { gap: 20px; flex-wrap: wrap; } }
+/* Phones: drop the intro paragraph and let the hero size to its content, so the folder
+   sits right under the buttons instead of after a fixed-height gap. */
+@media (max-width: 767px) { .hero-intro { display: none; }.portfolio-hero { min-height: 0; padding-top: 112px; padding-bottom: 410px; } }
+@media (max-width: 767px) { .hero-copy h1 { font-size: 40px; }.hero-copy>p:first-child { font-size: 10px; }.hero-copy>div { gap: 20px; flex-wrap: wrap; } }
 @media (max-width: 380px) { .hero-copy h1 { font-size: 35px; } }
 
 /* Grid items may shrink below their artwork's intrinsic width instead of widening the page. */

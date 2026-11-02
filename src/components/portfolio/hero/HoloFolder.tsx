@@ -36,23 +36,27 @@ const PARTICLES = Array.from({ length: 14 }, (_, i) => ({
   tone: i % 2 ? "var(--holo-2)" : "var(--holo-1)",
 }));
 
+/** How far a hovered card slides up out of the folder, in px. */
+const HOVER_LIFT = 24;
+
+const fanAngle = (i: number, open: boolean) => (open ? 8 : 3) * (i - 1.5);
+
 /**
- * Fan geometry: closed, open (folder hovered) and the hovered card itself. Cards also step
- * sideways, so each one keeps its own strip to click instead of hiding behind the next.
+ * Where card i sits in the fan, closed or open (folder hovered). Cards also step sideways,
+ * so each keeps its own strip to click. Hovering never changes this: the button (the hit
+ * area) stays put and only the card's visible body lifts, so the pointer can't knock a card
+ * out from under itself and flicker.
  */
-function cardTransform(i: number, open: boolean, active: number | null): string {
+function fanTransform(i: number, open: boolean): string {
   const spread = i - 1.5;
   const x = spread * (open ? 64 : 36);
-  let angle = (open ? 8 : 3) * spread;
-  let lift = open ? 250 - i * 52 : 185 - i * 44;
+  const lift = open ? 250 - i * 52 : 185 - i * 44;
   const z = -30 + i * 14;
-  // A hovered card only slides up out of the folder; it keeps its place in the stack.
-  if (active === i) {
-    angle *= 0.4;
-    lift += 24;
-  }
-  return `translateX(${x}px) translateY(${-lift}px) translateZ(${z}px) rotateZ(${angle}deg)`;
+  return `translateX(${x}px) translateY(${-lift}px) translateZ(${z}px) rotateZ(${fanAngle(i, open)}deg)`;
 }
+
+/** The hovered card's body: slides up and straightens most of the way, within its own layer. */
+const liftTransform = (i: number, open: boolean) => `translateY(${-HOVER_LIFT}px) rotateZ(${-fanAngle(i, open) * 0.6}deg)`;
 
 export default function HoloFolder() {
   const fitRef = useRef<HTMLDivElement>(null);
@@ -89,8 +93,9 @@ export default function HoloFolder() {
   // Tilt and glare follow the pointer through CSS variables, without re-rendering.
   const move = (e: MouseEvent<HTMLDivElement>) => {
     const el = wrapRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
+    const box = fitRef.current;
+    if (!el || !box) return;
+    const r = box.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
     el.style.setProperty("--px", px.toFixed(3));
@@ -111,15 +116,14 @@ export default function HoloFolder() {
   const activeLabel = active === null ? null : interests[active]?.label;
 
   return (
-    <div ref={fitRef} className="holo-fit">
+    // Pointer tracking sits on this static box: the folder itself floats, and a moving
+    // hover target makes the folder open and close under a resting cursor.
+    <div ref={fitRef} className="holo-fit" onMouseMove={move} onMouseEnter={enter} onMouseLeave={leave}>
       <div
         ref={wrapRef}
         className={`holo ${open ? "is-open" : ""}`}
         role="group"
         aria-label="What I'm into"
-        onMouseMove={move}
-        onMouseEnter={enter}
-        onMouseLeave={leave}
         onFocus={enter}
         onBlur={(e) => {
           if (!e.currentTarget.contains(e.relatedTarget)) leave();
@@ -153,7 +157,7 @@ export default function HoloFolder() {
                 key={interest.kind}
                 type="button"
                 className={`holo-card ${active === i ? "is-active" : ""}`}
-                style={{ "--tone": card.tone, transform: cardTransform(i, open, active), transitionDelay: `${i * 40}ms` } as CSSProperties}
+                style={{ "--tone": card.tone, "--lift": `${HOVER_LIFT}px`, transform: fanTransform(i, open), transitionDelay: `${i * 40}ms` } as CSSProperties}
                 aria-haspopup="dialog"
                 aria-label={`${interest.label}: ${interest.tagline}`}
                 onMouseEnter={() => setActive(i)}
@@ -164,6 +168,7 @@ export default function HoloFolder() {
                   setSelected(i);
                 }}
               >
+                <span className="holo-card-body" style={active === i ? { transform: liftTransform(i, open) } : undefined}>
                 <span className="holo-card-head">
                   <strong>{interest.label}</strong>
                   <span>{pad(i + 1)}/{pad(interests.length)}</span>
@@ -179,6 +184,7 @@ export default function HoloFolder() {
                   </span>
                 </span>
                 <span className="holo-card-rule" aria-hidden />
+                </span>
               </button>
             );
           })}

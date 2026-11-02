@@ -69,7 +69,7 @@ function Index() {
             <span className="font-serif font-normal italic text-secondary">Code meets</span><br />
             curiosity.
           </h1>
-          <p className="mt-6 max-w-sm text-base leading-relaxed text-muted-foreground">
+          <p className="hero-intro mt-6 max-w-sm text-base leading-relaxed text-muted-foreground">
             I build fast, thoughtful React products — right now, real-time promotions at Pinntag — with a soft spot for AI, RAG pipelines and the occasional “what if?”
           </p>
           <div className="pointer-events-auto mt-8 flex items-center gap-6">

@@ -18,6 +18,7 @@
   translate: 0 18px;
   animation: holo-float 6s ease-in-out infinite;
 }
+.holo.is-open { animation-play-state: paused; }
 .holo-stage {
   position: absolute;
   inset: 0;
@@ -99,11 +100,25 @@
 .holo-tab i { width: 6px; height: 6px; border-radius: 50%; background: var(--holo-1); box-shadow: 0 0 8px var(--holo-1); }
 
 /* 5. Cards. */
+/* The button is the card's fixed hit area; .holo-card-body is what you see, and it lifts on hover. */
 .holo-card {
   left: calc(50% - 130px);
   bottom: 18px;
   width: 260px;
   height: 240px;
+  padding: 0;
+  border: 0;
+  background: none;
+  transform-origin: 50% 100%;
+  transition: transform .5s ease-out;
+  cursor: pointer;
+  pointer-events: auto;
+}
+/* While hovered, the hit area also covers the lifted part above, so it can't slip off the top. */
+.holo-card.is-active::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: calc(var(--lift) + 6px); }
+.holo-card-body {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -115,12 +130,11 @@
   border: 1px solid color-mix(in oklch, var(--ink) 25%, transparent);
   box-shadow: 0 10px 30px -12px color-mix(in oklch, var(--ink) 55%, transparent);
   transform-origin: 50% 100%;
-  transition: transform .5s ease-out, box-shadow .3s ease-out;
-  cursor: pointer;
-  pointer-events: auto;
+  transition: transform .28s ease-out, box-shadow .3s ease-out;
 }
-.holo-card.is-active { box-shadow: 0 0 0 1px var(--tone), 0 0 36px 6px color-mix(in oklch, var(--tone) 60%, transparent), 0 18px 40px -12px color-mix(in oklch, var(--ink) 60%, transparent); }
-.holo-card:focus-visible { outline: 2px solid var(--holo-1); outline-offset: 3px; }
+.holo-card.is-active .holo-card-body { box-shadow: 0 0 0 1px var(--tone), 0 0 36px 6px color-mix(in oklch, var(--tone) 60%, transparent), 0 18px 40px -12px color-mix(in oklch, var(--ink) 60%, transparent); }
+.holo-card:focus-visible { outline: none; }
+.holo-card:focus-visible .holo-card-body { outline: 2px solid var(--holo-1); outline-offset: 3px; }
 .holo-card-head { display: flex; justify-content: space-between; align-items: baseline; }
 .holo-card-head strong { font-family: var(--font-display); font-weight: 800; font-size: 22px; line-height: 1; }
 .holo-card-head span, .holo-card-meta { font: 600 10px var(--mono); letter-spacing: .25em; }
@@ -192,5 +206,5 @@
 @media (prefers-reduced-motion: reduce) {
   .holo, .holo-ring, .holo-mark i, .holo-particles i, .holo-scan { animation: none; }
   .holo-scan { display: none; }
-  .holo-card, .holo-stage { transition: none; }
+  .holo-card, .holo-card-body, .holo-stage { transition: none; }
 }
