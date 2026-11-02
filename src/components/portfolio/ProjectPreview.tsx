@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
-import { FaqArt } from "./art/FaqArt";
 import { GuardianArt } from "./art/GuardianArt";
 import { NextHireArt } from "./art/NextHireArt";
+import { ResolvArt } from "./art/ResolvArt";
 import { SherlockArt } from "./art/SherlockArt";
 import type { ProjectArt } from "./content";
 
@@ -9,7 +9,7 @@ const ART: Record<ProjectArt, ComponentType> = {
   redaction: SherlockArt,
   embedding: NextHireArt,
   ledger: GuardianArt,
-  translation: FaqArt,
+  agents: ResolvArt,
 };
 
 /** Interactive, decorative project artwork: purely visual, so it is hidden from assistive tech. */

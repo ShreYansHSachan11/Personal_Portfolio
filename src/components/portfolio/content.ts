@@ -31,7 +31,7 @@ export const skillGroups = [
   { title: "Familiar with", items: ["Figma", "Flutter", "Dart", "Chai", "Mocha"] },
 ] as const;
 
-export type ProjectArt = "redaction" | "embedding" | "ledger" | "translation";
+export type ProjectArt = "redaction" | "embedding" | "ledger" | "agents";
 
 export const projects = [
   {
@@ -65,14 +65,17 @@ export const projects = [
     impact: ["Improved crowdfunding transparency by 30% using blockchain.", "Achieved a 25% rise in user engagement through WebSockets."],
   },
   {
-    slug: "faq-manager", number: "04", title: "FAQ Manager", category: "Backend", art: "translation",
-    subtitle: "Answers in every language.",
-    description: "A multilingual FAQ management system with automatic translation and Redis caching.",
-    stack: ["Node.js", "MongoDB", "Redis", "Google Translate API"],
-    live: "https://faqfrontend-shreyanshsachan11s-projects.vercel.app/", code: "https://github.com/ShreYansHSachan11/FAQbackend",
-    overview: "FAQs are only useful if people can read them. This system stores questions and answers once and serves them in multiple languages through automated translation.",
-    build: "A Node.js and MongoDB back end with the Google Translate API for automatic translations, and Redis caching in front of the database.",
-    impact: ["Optimized performance with Redis, cutting database queries by 50%."],
+    slug: "resolv", number: "04", title: "Resolv", category: "AI", art: "agents",
+    subtitle: "Incidents that resolve themselves.",
+    description: "AI-powered incident management: four agents triage, acknowledge, follow up on and resolve support tickets.",
+    stack: ["FastAPI", "PostgreSQL", "SQLAlchemy", "Gemini / Claude", "React", "Tailwind CSS", "Recharts"],
+    live: null, code: "https://github.com/ShreYansHSachan11/Ai-Incident-Orchestrator",
+    overview: "Support teams lose hours routing tickets, chasing callers and closing work that is already done. In Resolv, AI agents pick up each new incident, route it to the right team, assign an on-shift engineer, keep the caller informed while it waits, and resolve it once the caller confirms the fix.",
+    build: "A FastAPI back end with async SQLAlchemy, Alembic and PostgreSQL runs four agents (triage, acknowledgement, pending and resolution) on Google Gemini or Anthropic Claude, switchable with one setting. Triage assigns engineers by round-robin from an uploaded shift roster. A React, Tailwind CSS and Recharts dashboard shows live KPIs, agent activity and the automation funnel.",
+    impact: [
+      "Takes an incident from creation to resolution with four cooperating agents, so engineers step in only where they are needed.",
+      "Records every agent action in a full audit trail, with live KPIs and an automation funnel on the dashboard.",
+    ],
   },
 ] as const satisfies readonly {
   slug: string; number: string; title: string; category: string; art: ProjectArt; subtitle: string; description: string;
@@ -208,7 +211,7 @@ export const posts: readonly Post[] = [
 
 export type Project = (typeof projects)[number];
 
-export const PROJECT_CATEGORIES = ["All", "AI", "Web3", "Backend"] as const;
+export const PROJECT_CATEGORIES = ["All", "AI", "Web3"] as const;
 
 export function filterByCategory<T extends { category: string }>(items: readonly T[], category: string): T[] {
   return items.filter((item) => category === "All" || item.category === category);

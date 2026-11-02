@@ -60,7 +60,7 @@ export const pages = {
   work: {
     path: "/work",
     title: "Projects — Shreyansh Sachan",
-    description: "Projects by Shreyansh Sachan: Sherlock (PII anonymization), NextHire (AI job portal), Guardian (disaster response) and a multilingual FAQ system.",
+    description: "Projects by Shreyansh Sachan: Sherlock (PII anonymization), NextHire (AI job portal), Guardian (disaster response) and Resolv (AI incident management).",
     ogDescription: "AI tooling, full-stack apps and real-time platforms — with live demos and source code.",
   },
   achievements: {

@@ -1,16 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { achievements, filterByCategory, findPost, findProject, posts, profile, projects } from "./content";
+import { achievements, filterByCategory, findPost, findProject, posts, profile, PROJECT_CATEGORIES, projects } from "./content";
 
 describe("Portfolio browsing", () => {
-  it("shows Sherlock and NextHire for AI", () => {
-    expect(filterByCategory(projects, "AI").map((p) => p.slug)).toEqual(["sherlock", "nexthire"]);
+  it("shows Sherlock, NextHire and Resolv for AI", () => {
+    expect(filterByCategory(projects, "AI").map((p) => p.slug)).toEqual(["sherlock", "nexthire", "resolv"]);
   });
-  it("shows Guardian for Web3 and the FAQ Manager for Backend", () => {
+  it("shows Guardian for Web3", () => {
     expect(filterByCategory(projects, "Web3").map((p) => p.slug)).toEqual(["guardian"]);
-    expect(filterByCategory(projects, "Backend").map((p) => p.slug)).toEqual(["faq-manager"]);
   });
   it("shows all four projects when All is selected", () => {
-    expect(filterByCategory(projects, "All").map((p) => p.slug)).toEqual(["sherlock", "nexthire", "guardian", "faq-manager"]);
+    expect(filterByCategory(projects, "All").map((p) => p.slug)).toEqual(["sherlock", "nexthire", "guardian", "resolv"]);
+  });
+  it("gives every category filter at least one project", () => {
+    for (const c of PROJECT_CATEGORIES) expect(filterByCategory(projects, c).length).toBeGreaterThan(0);
   });
   it("groups the journal by category", () => {
     expect(filterByCategory(posts, "Engineering").map((p) => p.slug)).toEqual(["no-silver-bullet", "go-to-considered-harmful", "worse-is-better"]);

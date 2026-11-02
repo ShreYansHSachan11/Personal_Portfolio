@@ -2,27 +2,28 @@ import { useEffect, useRef, type MouseEvent, type ReactNode } from "react";
 import { useMediaQuery, usePrefersReducedMotion } from "@/hooks/useMediaQuery";
 
 export function TiltCard({ children, className = "" }: { children: ReactNode; className?: string }) {
+  // The outer box takes the pointer and never moves; only the inner one tilts. If the tilting element
+  // were also the hover target, its edge would swing out from under a resting cursor and flicker.
   const ref = useRef<HTMLDivElement>(null);
+  const tilt = useRef<HTMLDivElement>(null);
   const still = usePrefersReducedMotion();
   const move = (e: MouseEvent<HTMLDivElement>) => {
-    const el = ref.current;
-    if (!el || still) return;
-    const r = el.getBoundingClientRect();
+    const box = ref.current;
+    const el = tilt.current;
+    if (!box || !el || still) return;
+    const r = box.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width - 0.5;
     const y = (e.clientY - r.top) / r.height - 0.5;
     el.style.transform = `perspective(900px) rotateY(${x * 14}deg) rotateX(${-y * 14}deg) translateZ(0)`;
   };
   const leave = () => {
-    if (ref.current) ref.current.style.transform = "";
+    if (tilt.current) tilt.current.style.transform = "";
   };
   return (
-    <div
-      ref={ref}
-      onMouseMove={move}
-      onMouseLeave={leave}
-      className={`transition-transform duration-200 ease-out [transform-style:preserve-3d] ${className}`}
-    >
-      {children}
+    <div ref={ref} onMouseMove={move} onMouseLeave={leave} className={className}>
+      <div ref={tilt} className="transition-transform duration-200 ease-out [transform-style:preserve-3d]">
+        {children}
+      </div>
     </div>
   );
 }
@@ -191,20 +192,26 @@ export function FlowLine() {
 
 /** Magnetic button wrapper */
 export function Magnetic({ children }: { children: ReactNode }) {
+  // Same split as TiltCard: measure the still outer box, move only the inner one, so the pull is
+  // computed from a steady position and the hover target never slides away from the cursor.
   const ref = useRef<HTMLDivElement>(null);
+  const pull = useRef<HTMLDivElement>(null);
   const still = usePrefersReducedMotion();
   const move = (e: MouseEvent<HTMLDivElement>) => {
-    const el = ref.current;
-    if (!el || still) return;
-    const r = el.getBoundingClientRect();
+    const box = ref.current;
+    const el = pull.current;
+    if (!box || !el || still) return;
+    const r = box.getBoundingClientRect();
     el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.3}px, ${(e.clientY - r.top - r.height / 2) * 0.4}px)`;
   };
   const leave = () => {
-    if (ref.current) ref.current.style.transform = "";
+    if (pull.current) pull.current.style.transform = "";
   };
   return (
-    <div ref={ref} className="inline-block max-w-full transition-transform duration-200 ease-out" onMouseMove={move} onMouseLeave={leave}>
-      {children}
+    <div ref={ref} className="inline-block max-w-full" onMouseMove={move} onMouseLeave={leave}>
+      <div ref={pull} className="transition-transform duration-200 ease-out">
+        {children}
+      </div>
     </div>
   );
 }
