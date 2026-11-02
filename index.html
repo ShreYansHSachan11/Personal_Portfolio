@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Page-specific title/description/OG tags are rendered per route via TanStack Router's head(). -->
+    <!-- The build writes each page's title, description and share tags here (see vite.config.ts);
+         in the browser TanStack Router's head() takes over. -->
+    <!--app-head-->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

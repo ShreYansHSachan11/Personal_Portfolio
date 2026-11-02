@@ -22,9 +22,10 @@ function NotFound() {
     <PageShell band={false}>
       {/* Not-found renders outside a matched route's head(), so set its tags directly (React 19 hoists them). */}
       <title>Page not found — Shreyansh Sachan</title>
-      <meta name="description" content="This page doesn't exist. Head back to the studio." />
+      <meta name="description" content="This page doesn't exist. Head back to the home page." />
+      <meta name="robots" content="noindex" />
       <div className="page-content mx-auto max-w-6xl px-6 pb-20">
-        <p className="mb-5 text-xs font-bold uppercase">404 / LOST IN THE STUDIO</p>
+        <p className="mb-5 text-xs font-bold uppercase">404 / PAGE NOT FOUND</p>
         <h1 className="font-display text-5xl font-extrabold leading-tight md:text-7xl">
           Nothing <span className="font-serif font-normal italic text-secondary">here.</span>
         </h1>

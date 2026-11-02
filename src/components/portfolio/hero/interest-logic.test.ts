@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { interests } from "../content";
 import { Chess } from "chess.js";
-import { chessComUrls, parseChessCom, peekLift } from "./interest-logic";
+import { chessComUrls, parseChessCom, spotifySearchUrl } from "./interest-logic";
+import { previews } from "./previews";
 
 describe("chess.com", () => {
   it("reads ratings, totals and the avatar from API responses", () => {
@@ -27,15 +28,6 @@ describe("chess.com", () => {
   });
 });
 
-describe("peekLift", () => {
-  it("rests at the ends of a period and peaks in the middle", () => {
-    expect(peekLift(0, 2)).toBeCloseTo(0);
-    expect(peekLift(1, 2)).toBeCloseTo(1);
-    expect(peekLift(2, 2)).toBeCloseTo(0);
-    expect(peekLift(-1, 2)).toBeCloseTo(1);
-  });
-});
-
 describe("interests content", () => {
   it("has one card per kind with a usable list", () => {
     const kinds = interests.map((i) => i.kind);
@@ -55,5 +47,29 @@ describe("interests content", () => {
         expect(interest.chessCom.username).toMatch(/^[A-Za-z0-9_-]+$/);
       }
     }
+  });
+});
+
+describe("music previews", () => {
+  const music = interests.find((i) => i.kind === "music");
+  const songs = music && "items" in music ? music.items : [];
+
+  it("has a preview clip and Apple Music link for every listed song, on Apple hosts only", () => {
+    for (const song of songs) {
+      const p = previews[song.title];
+      expect(p, song.title).toBeDefined();
+      if (!p) continue;
+      const audio = new URL(p.audio);
+      const link = new URL(p.link);
+      expect(audio.protocol).toBe("https:");
+      expect(audio.hostname.endsWith(".itunes.apple.com")).toBe(true);
+      expect(link.hostname).toBe("music.apple.com");
+      expect([...link.searchParams.keys()].every((k) => k === "i")).toBe(true);
+    }
+  });
+
+  it("builds an encoded Spotify search link", () => {
+    expect(spotifySearchUrl("cold/mess", "Prateek Kuhad")).toBe("https://open.spotify.com/search/cold%2Fmess%20Prateek%20Kuhad");
+    expect(spotifySearchUrl("Kyon", "Papon & Sunidhi Chauhan")).toBe("https://open.spotify.com/search/Kyon%20Papon%20Sunidhi%20Chauhan");
   });
 });

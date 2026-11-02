@@ -4,9 +4,8 @@ interface Props { children: ReactNode }
 interface State { failed: boolean }
 
 /**
- * Contains failures from the lazily loaded WebGL scene (chunk load errors,
- * missing WebGL support) so the rest of the page keeps working. The gradient
- * halo behind the canvas remains as a graceful fallback.
+ * Contains failures from the lazily loaded hero folder (e.g. a chunk that fails
+ * to download) so the rest of the page keeps working without it.
  */
 export class SceneBoundary extends Component<Props, State> {
   state: State = { failed: false };
@@ -16,7 +15,7 @@ export class SceneBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("[HeroCards] 3D scene failed to render", error, info.componentStack);
+    console.error("[HoloFolder] hero folder failed to render", error, info.componentStack);
   }
 
   render() {

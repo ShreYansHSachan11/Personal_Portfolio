@@ -203,7 +203,7 @@ export function Magnetic({ children }: { children: ReactNode }) {
     if (ref.current) ref.current.style.transform = "";
   };
   return (
-    <div ref={ref} className="inline-block transition-transform duration-200 ease-out" onMouseMove={move} onMouseLeave={leave}>
+    <div ref={ref} className="inline-block max-w-full transition-transform duration-200 ease-out" onMouseMove={move} onMouseLeave={leave}>
       {children}
     </div>
   );

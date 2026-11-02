@@ -1,9 +1,10 @@
-import { X } from "lucide-react";
+import { Pause, Play, X } from "lucide-react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import type { ChessStats, Interest, InterestItem } from "../content";
 import { covers } from "./covers";
 import { PlayableBoard } from "./ChessBoard";
-import { chessComUrls, parseChessCom } from "./interest-logic";
+import { chessComUrls, parseChessCom, spotifySearchUrl } from "./interest-logic";
+import { previews } from "./previews";
 
 /** Live chess.com numbers, starting from the build-time snapshot and keeping it if the fetch fails. */
 function useChessComStats(username: string, snapshot: ChessStats) {
@@ -69,8 +70,8 @@ function ChessProfile({ username, snapshot }: { username: string; snapshot: Ches
         <strong>{stats.games.toLocaleString("en-IN")}</strong> games played
         <span className={`ip-live ${live ? "is-live" : ""}`}>{live ? "live" : "snapshot"}</span>
       </p>
-      <a className="ip-challenge" href={urls.challenge} target="_blank" rel="noreferrer">
-        Challenge me <span aria-hidden>♟</span>
+      <a className="ip-challenge" href={urls.challenge} target="_blank" rel="noreferrer" aria-label="Challenge me on chess.com">
+        Challenge<span className="ip-challenge-me"> me</span> <span aria-hidden>♟</span>
       </a>
     </div>
   );
@@ -118,30 +119,134 @@ function Cover({ title, className }: { title: string; className?: string }) {
   );
 }
 
-function MusicView({ items }: { items: readonly InterestItem[] }) {
-  const [playing, setPlaying] = useState(0);
-  const now = items[playing];
+/** Song list with 30-second iTunes previews; the record spins only while a clip plays. */
+function MusicView({ items, open }: { items: readonly InterestItem[]; open: boolean }) {
+  const [current, setCurrent] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [failed, setFailed] = useState(false);
+  const audio = useRef<HTMLAudioElement>(null);
+  const loaded = useRef<string | null>(null);
+  const now = items[current];
+  const clip = now ? previews[now.title] : undefined;
+
+  // The panel stays mounted while it animates closed, so stop the music as soon as it closes.
+  useEffect(() => {
+    if (!open) audio.current?.pause();
+  }, [open]);
+  useEffect(() => {
+    const el = audio.current;
+    return () => el?.pause();
+  }, []);
+
+  /** Plays track i, or toggles pause if it's already the one playing. */
+  const toggle = (i: number) => {
+    const el = audio.current;
+    const item = items[i];
+    const p = item ? previews[item.title] : undefined;
+    setCurrent(i);
+    setFailed(false);
+    if (!el || !item || !p) {
+      setFailed(Boolean(item));
+      return;
+    }
+    if (loaded.current === item.title && !el.paused) {
+      el.pause();
+      return;
+    }
+    if (loaded.current !== item.title) {
+      el.src = p.audio;
+      loaded.current = item.title;
+      setProgress(0);
+    }
+    el.play().catch((e: unknown) => {
+      // Switching tracks quickly aborts the previous play() call; that isn't a failure.
+      if (!(e instanceof DOMException && e.name === "AbortError")) setFailed(true);
+    });
+    if ("mediaSession" in navigator) {
+      const art = covers[item.title];
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: item.title,
+        artist: item.meta,
+        artwork: art ? [{ src: art, sizes: "600x600", type: "image/jpeg" }] : [],
+      });
+    }
+  };
+
+  const ended = () => {
+    setPlaying(false);
+    setProgress(0);
+    // Carry on down the list, stopping after the last song.
+    if (current + 1 < items.length) toggle(current + 1);
+  };
+
   return (
     <div className="ip-music">
-      {now && (
-        <div key={now.title} className="ip-deck" aria-hidden>
-          <div className="ip-vinyl">
-            <Cover title={now.title} className="ip-vinyl-label" />
+      <div className="ip-player">
+        {now && (
+          <div key={now.title} className={`ip-deck ${playing ? "is-playing" : ""}`} aria-hidden>
+            <div className="ip-vinyl">
+              <Cover title={now.title} className="ip-vinyl-label" />
+            </div>
+            <Cover title={now.title} className="ip-sleeve" />
           </div>
-          <Cover title={now.title} className="ip-sleeve" />
-        </div>
-      )}
-      <ol className="ip-tracks">
-        {items.map((item, i) => (
-          <li key={item.title}>
-            <button type="button" aria-pressed={playing === i} onClick={() => setPlaying(i)}>
-              <Cover title={item.title} className="ip-thumb" />
-              <span className="ip-track"><strong>{item.title}</strong><em>{item.meta}</em></span>
-              {playing === i && <span className="ip-eq" aria-hidden><i /><i /><i /><i /></span>}
+        )}
+        {now && (
+          <div className="ip-controls">
+            <button
+              type="button"
+              className="ip-playpause"
+              onClick={() => toggle(current)}
+              aria-label={`${playing ? "Pause" : "Play"} ${now.title}`}
+              disabled={!clip}
+            >
+              {playing ? <Pause /> : <Play />}
             </button>
-          </li>
-        ))}
+            <span className="ip-progress" aria-hidden><i style={{ transform: `scaleX(${progress})` }} /></span>
+          </div>
+        )}
+        {now && (
+          <p className="ip-listen">
+            {failed ? "Preview unavailable. " : "30s preview. "}Full song on{" "}
+            {clip && <><a href={clip.link} target="_blank" rel="noreferrer">Apple Music</a>{" · "}</>}
+            <a href={spotifySearchUrl(now.title, now.meta)} target="_blank" rel="noreferrer">Spotify</a>
+          </p>
+        )}
+      </div>
+      <ol className="ip-tracks">
+        {items.map((item, i) => {
+          const active = current === i;
+          return (
+            <li key={item.title}>
+              <button
+                type="button"
+                aria-pressed={active}
+                aria-label={`${active && playing ? "Pause" : "Play"} ${item.title} by ${item.meta}`}
+                onClick={() => toggle(i)}
+              >
+                <Cover title={item.title} className="ip-thumb" />
+                <span className="ip-track"><strong>{item.title}</strong><em>{item.meta}</em></span>
+                {active && <span className={`ip-eq ${playing ? "" : "is-paused"}`} aria-hidden><i /><i /><i /><i /></span>}
+              </button>
+            </li>
+          );
+        })}
       </ol>
+      <audio
+        ref={audio}
+        preload="none"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onEnded={ended}
+        onError={() => {
+          setPlaying(false);
+          if (loaded.current) setFailed(true);
+        }}
+        onTimeUpdate={(e) => {
+          const { currentTime, duration } = e.currentTarget;
+          setProgress(duration > 0 ? currentTime / duration : 0);
+        }}
+      />
     </div>
   );
 }
@@ -194,10 +299,10 @@ function MoviesView({ items }: { items: readonly InterestItem[] }) {
   );
 }
 
-function Body({ interest }: { interest: Interest }) {
+function Body({ interest, open }: { interest: Interest; open: boolean }) {
   switch (interest.kind) {
     case "chess": return <ChessView interest={interest} />;
-    case "music": return <MusicView items={interest.items} />;
+    case "music": return <MusicView items={interest.items} open={open} />;
     case "books": return <BooksView items={interest.items} />;
     case "movies": return <MoviesView items={interest.items} />;
   }
@@ -242,7 +347,7 @@ export function InterestPanel({ interest, onClose }: { interest: Interest | null
             </button>
           </header>
           <div key={shown.kind} className="ip-body">
-            <Body interest={shown} />
+            <Body interest={shown} open={interest !== null} />
           </div>
           {shown.sample && <p className="ip-sample">Sample picks for now. The real list is coming soon.</p>}
         </div>

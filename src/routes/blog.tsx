@@ -1,15 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeading, PageShell } from "@/components/portfolio/PortfolioChrome";
 import { JournalGrid } from "@/components/portfolio/Showcase";
-import { pageMeta } from "@/lib/meta";
+import { pageMeta, pages } from "@/lib/meta";
 
 export const Route = createFileRoute("/blog")({
-  head: () =>
-    pageMeta({
-      title: "The journal — Shreyansh Sachan",
-      description: "Reading notes on classic essays about software: Brooks, Dijkstra, Spolsky, Graham, Gabriel and Victor, with the takeaways Shreyansh Sachan keeps coming back to.",
-      ogDescription: "Classic essays on software, and what I took from them.",
-    }),
+  head: () => pageMeta(pages.blog),
   component: Blog,
 });
 

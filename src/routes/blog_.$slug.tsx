@@ -5,7 +5,7 @@ import { findPost } from "@/components/portfolio/content";
 import { PageShell } from "@/components/portfolio/PortfolioChrome";
 import { postByline } from "@/components/portfolio/Showcase";
 import { Button } from "@/components/ui/button";
-import { pageMeta } from "@/lib/meta";
+import { pageMeta, pages, postPage } from "@/lib/meta";
 
 const COPIED_RESET_MS = 2500;
 
@@ -17,13 +17,8 @@ export const Route = createFileRoute("/blog_/$slug")({
     return post;
   },
   head: ({ loaderData }) =>
-    loaderData
-      ? pageMeta({
-          title: loaderData.source ? `${loaderData.title} (${loaderData.source.author}): reading notes — Shreyansh Sachan` : `${loaderData.title} — Shreyansh Sachan`,
-          description: loaderData.excerpt,
-          type: "article",
-        })
-      : pageMeta({ title: "Story unavailable — Shreyansh Sachan", description: "This story is unavailable.", type: "article" }),
+    // Missing posts throw notFound() in the loader; this fallback only covers loading states.
+    pageMeta(loaderData ? postPage(loaderData) : pages.blog),
   component: Article,
 });
 
@@ -84,7 +79,7 @@ function Article() {
           </div>
         </div>
         <p role="status" className="mb-5 text-sm text-muted-foreground empty:hidden">
-          {state === "failed" ? "Copy the page address from your browser to share this story." : ""}
+          {state === "failed" ? "Copy the page address from your browser to share these notes." : ""}
         </p>
         <div className="article-body mx-auto max-w-2xl">
           {post.sections.map((s) => <section key={s.title}><h2>{s.title}</h2><p>{s.text}</p></section>)}

@@ -37,8 +37,7 @@ export const chessComUrls = (username: string) => {
   };
 };
 
-/** Smooth 0→1→0 bump over one period, used for the idle "peek" of each card in turn. */
-export function peekLift(t: number, period: number): number {
-  const phase = (((t % period) + period) % period) / period;
-  return Math.sin(phase * Math.PI) ** 2;
+/** Spotify has no keyless lookup API, so link to its search for the song and artist. */
+export function spotifySearchUrl(title: string, artist: string): string {
+  return `https://open.spotify.com/search/${encodeURIComponent(`${title} ${artist.replace(/\s*&\s*/g, " ")}`)}`;
 }

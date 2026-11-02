@@ -12,6 +12,10 @@ declare module "@tanstack/react-router" {
   }
 }
 
+// The build bakes each page's tags into its HTML for link-preview scrapers; the router's
+// head() manages them from here on, so drop the static copies to avoid duplicates.
+for (const tag of document.head.querySelectorAll("[data-prerendered]")) tag.remove();
+
 const root = document.getElementById("root");
 if (!root) throw new Error("Root element #root not found");
 

@@ -1,0 +1,196 @@
+/* Holo folder: a CSS 3D "holographic directory" holding the "what I'm into" cards.
+   Colours come from the --cream/--ink/--ember/--cobalt/--holo-* tokens in styles.css. */
+
+.holo-fit { position: absolute; inset: 0; --fit: 1; }
+.holo {
+  --px: 0;
+  --py: 0;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Centred on the box absolutely, so scaling down doesn't shift it off-centre. */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 460px;
+  height: 520px;
+  margin: -260px 0 0 -230px;
+  perspective: 1400px;
+  scale: var(--fit);
+  translate: 0 18px;
+  animation: holo-float 6s ease-in-out infinite;
+}
+.holo-stage {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(8deg - var(--py) * 16deg)) rotateY(calc(-14deg + var(--px) * 22deg));
+  transition: transform .3s ease-out;
+  /* The stage is a flat layer at z = 0; cards behind it (negative z) would lose clicks to it. */
+  pointer-events: none;
+}
+.holo-stage > * { position: absolute; }
+
+/* 1. Orbit rings: tilted flat, each spinning in its own plane (spin lives on the child). */
+.holo-orbit { left: 50%; top: 58%; transform-style: preserve-3d; pointer-events: none; }
+.holo-orbit-a { transform: translate(-50%, -50%) translateZ(-60px) rotateX(72deg); }
+.holo-orbit-b { transform: translate(-50%, -50%) translateZ(-60px) rotateX(72deg) rotateY(18deg); }
+.holo-ring { position: relative; border-radius: 50%; }
+.holo-orbit-a .holo-ring { width: 500px; height: 500px; border: 1.5px dashed color-mix(in oklch, var(--cobalt) 45%, transparent); animation: holo-spin 18s linear infinite; }
+.holo-orbit-b .holo-ring { width: 420px; height: 420px; border: 1px solid var(--glass-edge-strong); animation: holo-spin 26s linear infinite reverse; }
+.holo-ring i { position: absolute; top: -5px; left: calc(50% - 5px); width: 10px; height: 10px; border-radius: 50%; }
+.holo-orbit-a .holo-ring i { background: var(--holo-1); box-shadow: 0 0 12px 3px var(--holo-1); }
+.holo-orbit-b .holo-ring i { background: var(--ember); box-shadow: 0 0 12px 3px var(--ember); }
+
+/* 2. Particles. */
+.holo-particles { inset: 0; transform-style: preserve-3d; pointer-events: none; }
+.holo-particles i { position: absolute; border-radius: 50%; background: var(--dot); box-shadow: 0 0 6px 1px var(--dot); animation: holo-drift 4s ease-in-out infinite; }
+
+/* 3. Ground glow. */
+.holo-ground { left: 12%; right: 12%; bottom: -34px; height: 70px; border-radius: 50%; background: var(--cobalt); opacity: .4; filter: blur(30px); transform: translateZ(-80px); pointer-events: none; }
+
+/* Animated rainbow hairline border, drawn with a mask so the panel inside stays see-through. */
+.holo-back::before, .holo-pocket::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--gradient-holo);
+  background-size: 300% 100%;
+  animation: holo-shift 6s linear infinite;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 4. Back plate with grid and tab. */
+.holo-back {
+  left: 30px;
+  right: 30px;
+  bottom: 0;
+  height: 72%;
+  border-radius: 28px;
+  background:
+    linear-gradient(var(--glass-edge) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(90deg, var(--glass-edge) 1px, transparent 1px) 0 0 / 22px 22px,
+    var(--ink);
+  background-blend-mode: normal;
+  transform: translateZ(-40px);
+  box-shadow: 0 30px 60px -20px color-mix(in oklch, var(--ink) 60%, transparent);
+}
+.holo-back::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--ink); opacity: .7; }
+.holo-tab {
+  position: absolute;
+  top: -31px;
+  left: 26px;
+  width: 160px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-radius: 14px 14px 0 0;
+  background: var(--ink);
+  border: 1px solid var(--glass-edge);
+  border-bottom: 0;
+  color: var(--holo-1);
+  font: 600 11px var(--mono);
+  letter-spacing: .12em;
+}
+.holo-tab i { width: 6px; height: 6px; border-radius: 50%; background: var(--holo-1); box-shadow: 0 0 8px var(--holo-1); }
+
+/* 5. Cards. */
+.holo-card {
+  left: calc(50% - 130px);
+  bottom: 18px;
+  width: 260px;
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  text-align: left;
+  color: var(--ink);
+  background: linear-gradient(160deg, color-mix(in oklch, var(--tone) 85%, var(--cream)), color-mix(in oklch, var(--tone) 55%, var(--ink)));
+  border: 1px solid color-mix(in oklch, var(--ink) 25%, transparent);
+  box-shadow: 0 10px 30px -12px color-mix(in oklch, var(--ink) 55%, transparent);
+  transform-origin: 50% 100%;
+  transition: transform .5s ease-out, box-shadow .3s ease-out;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.holo-card.is-active { box-shadow: 0 0 0 1px var(--tone), 0 0 36px 6px color-mix(in oklch, var(--tone) 60%, transparent), 0 18px 40px -12px color-mix(in oklch, var(--ink) 60%, transparent); }
+.holo-card:focus-visible { outline: 2px solid var(--holo-1); outline-offset: 3px; }
+.holo-card-head { display: flex; justify-content: space-between; align-items: baseline; }
+.holo-card-head strong { font-family: var(--font-display); font-weight: 800; font-size: 22px; line-height: 1; }
+.holo-card-head span, .holo-card-meta { font: 600 10px var(--mono); letter-spacing: .25em; }
+.holo-card-meta { display: flex; justify-content: space-between; font-size: 9px; opacity: .6; }
+.holo-card-art { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 4px; }
+.holo-glyph { font-family: serif; font-size: 64px; line-height: 1; }
+.holo-barcode { display: flex; align-items: flex-end; gap: 2px; height: 30px; }
+.holo-barcode i { background: var(--ink); opacity: .8; }
+.holo-card-rule { height: 1px; background: color-mix(in oklch, var(--ink) 35%, transparent); }
+
+/* 6. Front glass pocket and HUD. */
+.holo-pocket {
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 50%;
+  border-radius: 26px;
+  transform-origin: 50% 100%;
+  transform: translateZ(40px) rotateX(-6deg);
+  pointer-events: none;
+}
+.holo-pocket-glass {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 22px 24px;
+  overflow: hidden;
+  border-radius: inherit;
+  /* Browsers skip backdrop blur for content in a 3D scene, so the glass is layered twice
+     to keep the cards behind it a soft shape rather than sharp detail. */
+  background: linear-gradient(var(--glass), var(--glass)), var(--glass);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  color: var(--cream);
+  box-shadow: inset 0 1px 0 var(--glass-edge), 0 24px 50px -20px color-mix(in oklch, var(--ink) 70%, transparent);
+}
+.holo-scan { position: absolute; left: 0; right: 0; top: 0; height: 25%; background: linear-gradient(transparent, color-mix(in oklch, white 25%, transparent), transparent); animation: holo-scan 3.2s linear infinite; }
+.holo-glare { position: absolute; inset: 0; background: radial-gradient(circle at calc((var(--px) + .5) * 100%) calc((var(--py) + .5) * 100%), color-mix(in oklch, white 28%, transparent), transparent 55%); }
+.holo-crt { position: absolute; inset: 0; opacity: .2; background: repeating-linear-gradient(0deg, color-mix(in oklch, white 30%, transparent) 0 1px, transparent 1px 4px); }
+.holo-corner { position: absolute; width: 12px; height: 12px; border: 0 solid var(--holo-1); }
+.holo-corner.tl { top: 10px; left: 10px; border-width: 1.5px 0 0 1.5px; }
+.holo-corner.tr { top: 10px; right: 10px; border-width: 1.5px 1.5px 0 0; }
+.holo-corner.bl { bottom: 10px; left: 10px; border-width: 0 0 1.5px 1.5px; }
+.holo-corner.br { bottom: 10px; right: 10px; border-width: 0 1.5px 1.5px 0; }
+.holo-hud-top { position: relative; display: flex; justify-content: space-between; font: 600 10px var(--mono); letter-spacing: .28em; }
+.holo-hud-top > span:first-child { display: flex; align-items: center; gap: 8px; }
+.holo-hud-top > span:last-child { color: var(--holo-1); }
+.holo-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 8px var(--ember); animation: holo-pulse 1.6s ease-in-out infinite; }
+.holo-load { position: relative; height: 3px; border-radius: 99px; background: var(--glass-edge); overflow: hidden; }
+.holo-load i { display: block; height: 100%; border-radius: inherit; background: var(--gradient-holo); background-size: 300% 100%; animation: holo-load 5s ease-in-out infinite; }
+.holo-hud-bottom { position: relative; display: flex; justify-content: space-between; align-items: flex-end; }
+.holo-hud-bottom small { display: block; font: 600 10px var(--mono); letter-spacing: .3em; opacity: .6; }
+.holo-hud-bottom em { display: block; margin-top: 4px; font-family: var(--font-sans, inherit); font-style: italic; font-weight: 600; font-size: 22px; }
+.holo-mark { position: relative; width: 56px; height: 56px; display: grid; place-items: center; }
+.holo-mark b { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%; background: var(--ember); color: var(--cream); font-family: var(--font-display); font-weight: 800; font-size: 20px; box-shadow: 0 0 24px 2px color-mix(in oklch, var(--ember) 70%, transparent); }
+.holo-mark i { position: absolute; inset: -7px; border-radius: 50%; border: 1px dashed var(--ember); animation: holo-spin 9s linear infinite; }
+
+/* Keyframes: spin and drift use the rotate/translate properties so they don't replace the 3D transforms. */
+@keyframes holo-shift { to { background-position: 300% 0; } }
+@keyframes holo-scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(400%); } }
+@keyframes holo-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes holo-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+@keyframes holo-spin { to { rotate: 360deg; } }
+@keyframes holo-drift { 0%, 100% { translate: 0 0; opacity: .3; } 50% { translate: 0 -14px; opacity: 1; } }
+@keyframes holo-load { 0% { width: 8%; } 60% { width: 92%; } 100% { width: 8%; background-position: 300% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .holo, .holo-ring, .holo-mark i, .holo-particles i, .holo-scan { animation: none; }
+  .holo-scan { display: none; }
+  .holo-card, .holo-stage { transition: none; }
+}

@@ -8,27 +8,22 @@ import { SceneBoundary } from "@/components/portfolio/SceneBoundary";
 import { AchievementList, ExperienceList, JournalGrid, ProjectGallery } from "@/components/portfolio/Showcase";
 import { skills } from "@/components/portfolio/content";
 import { Button } from "@/components/ui/button";
-import { pageMeta } from "@/lib/meta";
+import { pageMeta, pages } from "@/lib/meta";
 
-const HeroCards = lazy(() => import("@/components/portfolio/hero/HeroCards"));
+// Lazy: the interest panels pull in chess.js, which the first paint doesn't need.
+const HoloFolder = lazy(() => import("@/components/portfolio/hero/HoloFolder"));
 
 export const Route = createFileRoute("/")({
-  head: () =>
-    pageMeta({
-      title: "Shreyansh Sachan — Frontend & full-stack developer",
-      description: "Portfolio of Shreyansh Sachan, a frontend developer building React products, AI-powered tools and real-time web apps.",
-      ogDescription: "React, Node.js and AI projects — Sherlock, NextHire, Guardian and more. Come say hello.",
-    }),
+  head: () => pageMeta(pages.home),
   component: Index,
 });
 
-
-function SectionTitle({ number, title, accent, to, label, eyebrow = "FROM THE STUDIO" }: {
+function SectionTitle({ number, title, accent, to, label, eyebrow }: {
   number: string;
   title: string;
   accent: string;
   to: "/work" | "/achievements" | "/blog";
-  eyebrow?: string;
+  eyebrow: string;
   label: string;
 }) {
   return (
@@ -61,7 +56,7 @@ function Index() {
         <div className="hero-scene">
           <ClientOnly fallback={sceneFallback}>
             <SceneBoundary>
-              <Suspense fallback={sceneFallback}><HeroCards /></Suspense>
+              <Suspense fallback={sceneFallback}><HoloFolder /></Suspense>
             </SceneBoundary>
           </ClientOnly>
         </div>
@@ -88,7 +83,7 @@ function Index() {
         </div>
         <div className="hero-footer absolute inset-x-6 bottom-8 flex items-center justify-between border-t border-border pt-5 text-xs text-muted-foreground">
           <span>B.Tech CSE (Data Science) · Datathon winner</span>
-          <a href="#selected-work" aria-label="Scroll to selected work" className="flex items-center gap-2">
+          <a href="#selected-work" aria-label="Scroll to selected work" className="-my-3 flex items-center gap-2 py-3">
             SCROLL TO EXPLORE<ArrowDown className="size-4" />
           </a>
         </div>

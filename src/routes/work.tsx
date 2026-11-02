@@ -1,15 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeading, PageShell } from "@/components/portfolio/PortfolioChrome";
 import { ProjectGallery } from "@/components/portfolio/Showcase";
-import { pageMeta } from "@/lib/meta";
+import { pageMeta, pages } from "@/lib/meta";
 
 export const Route = createFileRoute("/work")({
-  head: () =>
-    pageMeta({
-      title: "Projects — Shreyansh Sachan",
-      description: "Projects by Shreyansh Sachan: Sherlock (PII anonymization), NextHire (AI job portal), Guardian (disaster response) and a multilingual FAQ system.",
-      ogDescription: "AI tooling, full-stack apps and real-time platforms — with live demos and source code.",
-    }),
+  head: () => pageMeta(pages.work),
   component: Work,
 });
 

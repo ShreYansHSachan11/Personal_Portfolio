@@ -14,7 +14,7 @@ const NAV_ITEMS = [
 export function PortfolioNav() {
   return (
     <header className="portfolio-nav">
-      <Link to="/" className="font-display text-xl font-extrabold" aria-label={`${profile.name} — home`}>
+      <Link to="/" className="-m-2 p-2 font-display text-xl font-extrabold" aria-label={`${profile.name} — home`}>
         s<span className="text-primary">.</span>
       </Link>
       <nav aria-label="Main navigation" className="flex items-center gap-1 sm:gap-4">

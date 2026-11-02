@@ -5,19 +5,15 @@ import { ExternalLink } from "@/components/portfolio/ExternalLink";
 import { Magnetic } from "@/components/portfolio/Interactive";
 import { PageHeading, PageShell } from "@/components/portfolio/PortfolioChrome";
 import { Button } from "@/components/ui/button";
-import { pageMeta } from "@/lib/meta";
+import { pageMeta, pages } from "@/lib/meta";
 
 export const Route = createFileRoute("/contact")({
-  head: () =>
-    pageMeta({
-      title: "Say hello — Shreyansh Sachan",
-      description: "Get in touch with Shreyansh Sachan about frontend, full-stack and AI projects — by email, GitHub or LinkedIn.",
-      ogDescription: "A good idea starts with a hello.",
-    }),
+  head: () => pageMeta(pages.contact),
   component: Contact,
 });
 
 function Contact() {
+  const [user, domain] = profile.email.split("@");
   return (
     <PageShell band={false}>
       <div className="page-content mx-auto max-w-6xl px-6 pb-20">
@@ -30,8 +26,9 @@ function Contact() {
         <div className="mt-14 border-y border-border py-10">
           <p className="mb-6 font-serif text-3xl italic">The quickest way to reach me.</p>
           <Magnetic>
-            <Button asChild className="h-16 max-w-full rounded-full border-2 border-foreground px-6 font-display text-base font-bold shadow-pop sm:px-8 sm:text-lg">
-              <a href={`mailto:${profile.email}`}><Mail /> <span className="truncate">{profile.email}</span></a>
+            <Button asChild className="h-auto min-h-16 max-w-full whitespace-normal rounded-full border-2 border-foreground px-6 py-3 text-left font-display text-base font-bold shadow-pop sm:px-8 sm:text-lg">
+              {/* The address may wrap after "@" on narrow phones rather than being cut off. */}
+              <a href={`mailto:${profile.email}`}><Mail /> <span className="min-w-0">{user}@<wbr />{domain}</span></a>
             </Button>
           </Magnetic>
         </div>

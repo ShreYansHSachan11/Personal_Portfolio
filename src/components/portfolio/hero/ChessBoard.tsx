@@ -1,6 +1,6 @@
 import { Chess, type Color, type Move, type PieceSymbol, type Square } from "chess.js";
 import { FlipVertical2, RotateCcw, Undo2 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState, type DragEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent, type ReactNode } from "react";
 
 const GLYPH: Record<PieceSymbol, string> = { k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟" };
 const NAME: Record<PieceSymbol, string> = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" };
@@ -36,6 +36,56 @@ function statusOf(game: Chess): { text: string; over: boolean } {
   return { text: `${turn} to move.`, over: false };
 }
 
+/** Confetti pieces: spread across the board with staggered starts; the colours cycle the palette. */
+const CONFETTI = Array.from({ length: 28 }, (_, i) => ({
+  "--x": `${(i * 37 + 7) % 100}%`,
+  "--d": `${((i * 0.13) % 0.9).toFixed(2)}s`,
+  "--r": `${(i * 53) % 360}deg`,
+  "--s": `${0.7 + ((i * 7) % 5) / 10}`,
+})) as CSSProperties[];
+
+function drawReason(game: Chess): string {
+  if (game.isStalemate()) return "Stalemate: no legal moves, but not in check.";
+  if (game.isThreefoldRepetition()) return "The same position came up three times.";
+  if (game.isInsufficientMaterial()) return "Not enough pieces left to checkmate.";
+  return "Fifty moves without a capture or a pawn move.";
+}
+
+interface GameOverProps {
+  win: boolean;
+  title: string;
+  detail: string;
+  onAgain: () => void;
+  onDismiss: () => void;
+}
+
+/** Shown over the board when a game ends: a celebration for wins, a quieter card for draws. */
+function GameOver({ win, title, detail, onAgain, onDismiss }: GameOverProps) {
+  const again = useRef<HTMLButtonElement>(null);
+  // Move focus to the obvious next step, so keyboard users land on "Play again".
+  useEffect(() => again.current?.focus(), []);
+  return (
+    <div className={`ip-over ${win ? "is-win" : ""}`} role="group" aria-label="Game over">
+      {win && (
+        <div className="ip-confetti" aria-hidden>
+          {CONFETTI.map((style, i) => <i key={i} style={style} />)}
+        </div>
+      )}
+      <div className="ip-over-card">
+        <span className="ip-over-glyph" aria-hidden>{win ? "♛\uFE0E" : "½"}</span>
+        <h3>{title}</h3>
+        <p>{detail}</p>
+        <div className="ip-over-actions">
+          <button ref={again} type="button" className="is-primary" onClick={onAgain}>
+            <RotateCcw aria-hidden /> Play again
+          </button>
+          <button type="button" onClick={onDismiss}>See the board</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface BoardProps {
   fen?: string;
   /** Puzzle mode: only the side to move plays, one move, and it must be checkmate. */
@@ -63,6 +113,7 @@ export function PlayableBoard({ fen, puzzle, toolbar }: BoardProps) {
   const [puzzleState, setPuzzleState] = useState<"idle" | "wrong" | "solved">("idle");
   const [hint, setHint] = useState(false);
   const [shake, setShake] = useState(0);
+  const [dismissed, setDismissed] = useState(false);
   const undoTimer = useRef(0);
   useEffect(() => () => window.clearTimeout(undoTimer.current), []);
 
@@ -84,6 +135,7 @@ export function PlayableBoard({ fen, puzzle, toolbar }: BoardProps) {
       return; // Illegal: chess.js throws; ignore the attempt.
     }
     setMoves([...moves, move]);
+    setDismissed(false);
     setSelected(null);
     setPending(null);
     if (!puzzle) return;
@@ -137,6 +189,7 @@ export function PlayableBoard({ fen, puzzle, toolbar }: BoardProps) {
     setPending(null);
     setPuzzleState("idle");
     setHint(false);
+    setDismissed(false);
   };
   const undo = () => {
     if (puzzle || !moves.length) return;
@@ -153,6 +206,15 @@ export function PlayableBoard({ fen, puzzle, toolbar }: BoardProps) {
       : selected ? "Now pick the square to move to."
       : "White to move. Find the checkmate.";
   }
+
+  // The result card: puzzle solved, checkmate, or a draw.
+  const fullMoves = Math.ceil(history.length / 2);
+  const result: Omit<GameOverProps, "onAgain" | "onDismiss"> | null =
+    puzzle
+      ? puzzleState === "solved" ? { win: true, title: "Solved!", detail: "Mate in one, found." } : null
+      : g.isCheckmate()
+        ? { win: true, title: "Checkmate!", detail: `${SIDE[g.turn() === "w" ? "b" : "w"]} wins in ${fullMoves} move${fullMoves === 1 ? "" : "s"}.` }
+        : status.over ? { win: false, title: "It's a draw", detail: drawReason(g) } : null;
 
   // Move list as "1. e4 e5 2. Nf3", showing the most recent moves only.
   const san = history.map((m) => m.san);
@@ -219,6 +281,7 @@ export function PlayableBoard({ fen, puzzle, toolbar }: BoardProps) {
             );
           })}
         </div>
+        {result && !dismissed && <GameOver {...result} onAgain={reset} onDismiss={() => setDismissed(true)} />}
         {pending && (
           <div className="ip-promote" role="dialog" aria-label="Promote pawn to">
             {PROMOTIONS.map((p) => (

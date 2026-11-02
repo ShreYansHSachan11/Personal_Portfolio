@@ -219,9 +219,8 @@ export const findPost = (slug: string) => posts.find((p) => p.slug === slug);
 
 /**
  * "What I'm into" cards in the hero card holder.
- * These lists are SAMPLE picks until Shreyansh fills in his real ones; while `sample`
- * is true the panel says so, so nothing reads as a real claim. Edit freely: each list
- * needs 3–6 items. The chess card is a playable mate-in-one: `fen` is the position
+ * These are Shreyansh's own picks. Set `sample: true` on a list to mark it as placeholder
+ * picks (the panel then says so). Each list needs 3–6 items. The chess card is a playable mate-in-one: `fen` is the position
  * (White to move) and `solution` the one mating move; the tests check both. Its
  * chess.com stats load live in the browser; `snapshot` is shown first and kept if
  * chess.com is unreachable.
@@ -273,13 +272,13 @@ export const interests: readonly Interest[] = [
     },
   },
   {
-    kind: "music", label: "Music", tagline: "what's in my headphones while I code.", tone: "pink", sample: true,
+    kind: "music", label: "Music", tagline: "what's in my headphones while I code.", tone: "pink", sample: false,
     items: [
-      { title: "Blinding Lights", meta: "The Weeknd" },
-      { title: "Kesariya", meta: "Arijit Singh" },
-      { title: "Do I Wanna Know?", meta: "Arctic Monkeys" },
-      { title: "Time", meta: "Hans Zimmer" },
-      { title: "Sunflower", meta: "Post Malone & Swae Lee" },
+      { title: "Yun Hi", meta: "Mohit Chauhan" },
+      { title: "Kyon", meta: "Papon & Sunidhi Chauhan" },
+      { title: "Phir Le Aya Dil", meta: "Arijit Singh" },
+      { title: "Shiv Kailash", meta: "Rishab Rikhiram Sharma" },
+      { title: "cold/mess", meta: "Prateek Kuhad" },
     ],
   },
   {
@@ -293,7 +292,7 @@ export const interests: readonly Interest[] = [
     ],
   },
   {
-    kind: "movies", label: "Movies", tagline: "stories I'd happily watch again.", tone: "primary", sample: true,
+    kind: "movies", label: "Movies", tagline: "stories I'd happily watch again.", tone: "primary", sample: false,
     items: [
       { title: "Interstellar", meta: "2014" },
       { title: "3 Idiots", meta: "2009" },

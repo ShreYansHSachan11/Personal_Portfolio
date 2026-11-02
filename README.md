@@ -1,7 +1,7 @@
 # Shreyansh Sachan — portfolio
 
 Multi-page creative developer portfolio — React 19, TypeScript, Tailwind CSS v4, TanStack Router (file-based),
-Three.js via `@react-three/fiber` 9 / `drei` 10, Lucide icons, built with Vite.
+Lucide icons, built with Vite. The hero's "holo folder" is pure CSS 3D (`src/components/portfolio/hero/HoloFolder.tsx`).
 
 ```bash
 npm install
@@ -51,3 +51,14 @@ experience, projects (with live demo and GitHub links), achievements, skills and
 reading notes on classic software essays: each credits the author and links to the original, and the summaries
 are original writing, not quotes. To add your own post, add an entry to `posts` without `source` and with a
 `date`. Project artwork in `ProjectPreview.tsx` is decorative illustration, not screenshots.
+
+The hero's "what I'm into" lists (music, books, movies) find their cover art by title, and songs also get a
+30-second iTunes preview clip and Apple Music link: run `npm run covers` after editing them.
+
+## Link previews and SEO
+
+Titles and descriptions for every page live in `src/lib/meta.ts`. The app renders in the browser, but link
+scrapers (LinkedIn, WhatsApp, Slack, X) don't run JavaScript, so `npm run build` also writes a static
+`index.html` per page with its tags filled in, plus `sitemap.xml` and `robots.txt` (see `prerenderHeads` in
+`vite.config.ts`). The share image is `public/og.png`; its source and the command to regenerate it are in
+`scripts/og-image.html`.

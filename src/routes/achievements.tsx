@@ -2,15 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { PageHeading, PageShell } from "@/components/portfolio/PortfolioChrome";
 import { AchievementList, EducationList, ExperienceList, SkillGroups } from "@/components/portfolio/Showcase";
-import { pageMeta } from "@/lib/meta";
+import { pageMeta, pages } from "@/lib/meta";
 
 export const Route = createFileRoute("/achievements")({
-  head: () =>
-    pageMeta({
-      title: "Milestones — Shreyansh Sachan",
-      description: "Experience, achievements, certifications and education of Shreyansh Sachan — frontend developer at Pinntag and Karnataka State Police Datathon winner.",
-      ogDescription: "Experience, wins, and the path so far.",
-    }),
+  head: () => pageMeta(pages.achievements),
   component: Achievements,
 });
 

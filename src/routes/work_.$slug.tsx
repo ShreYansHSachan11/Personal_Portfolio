@@ -5,7 +5,7 @@ import { ExternalLink } from "@/components/portfolio/ExternalLink";
 import { PageShell } from "@/components/portfolio/PortfolioChrome";
 import { ProjectPreview } from "@/components/portfolio/ProjectPreview";
 import { Button } from "@/components/ui/button";
-import { pageMeta } from "@/lib/meta";
+import { pageMeta, pages, projectPage } from "@/lib/meta";
 
 // "work_" un-nests this route from /work so the archive page doesn't swallow it, while the URL stays /work/$slug.
 export const Route = createFileRoute("/work_/$slug")({
@@ -15,9 +15,8 @@ export const Route = createFileRoute("/work_/$slug")({
     return project;
   },
   head: ({ loaderData }) =>
-    loaderData
-      ? pageMeta({ title: `${loaderData.title} — Shreyansh Sachan`, description: loaderData.description })
-      : pageMeta({ title: "Project unavailable — Shreyansh Sachan", description: "This project is unavailable." }),
+    // Missing projects throw notFound() in the loader; this fallback only covers loading states.
+    pageMeta(loaderData ? projectPage(loaderData) : pages.work),
   component: Project,
 });
 
@@ -31,7 +30,7 @@ function Project() {
           <Link to="/work"><ArrowLeft /> All projects</Link>
         </Button>
         <p className="mb-5 text-xs text-muted-foreground">{p.number} / {p.category} · {p.live ? "LIVE + SOURCE" : "SOURCE ON GITHUB"}</p>
-        <h1 className="font-display text-6xl font-extrabold md:text-8xl">{p.title}<span className="text-primary">.</span></h1>
+        <h1 className="font-display text-[clamp(2.25rem,10.5vw,6rem)] font-extrabold leading-none break-words">{p.title}<span className="text-primary">.</span></h1>
         <p className="mt-5 font-serif text-3xl italic md:text-4xl">{p.subtitle}</p>
         <p className="mt-6 max-w-xl text-muted-foreground">{p.description}</p>
         <div className="mb-10 mt-8 flex flex-wrap gap-3">
