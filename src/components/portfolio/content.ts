@@ -69,7 +69,7 @@ export const projects = [
     subtitle: "Incidents that resolve themselves.",
     description: "AI-powered incident management: four agents triage, acknowledge, follow up on and resolve support tickets.",
     stack: ["FastAPI", "PostgreSQL", "SQLAlchemy", "Gemini / Claude", "React", "Tailwind CSS", "Recharts"],
-    live: null, code: "https://github.com/ShreYansHSachan11/Ai-Incident-Orchestrator",
+    live: "https://resolv-amber.vercel.app/", code: "https://github.com/ShreYansHSachan11/Ai-Incident-Orchestrator",
     overview: "Support teams lose hours routing tickets, chasing callers and closing work that is already done. In Resolv, AI agents pick up each new incident, route it to the right team, assign an on-shift engineer, keep the caller informed while it waits, and resolve it once the caller confirms the fix.",
     build: "A FastAPI back end with async SQLAlchemy, Alembic and PostgreSQL runs four agents (triage, acknowledgement, pending and resolution) on Google Gemini or Anthropic Claude, switchable with one setting. Triage assigns engineers by round-robin from an uploaded shift roster. A React, Tailwind CSS and Recharts dashboard shows live KPIs, agent activity and the automation funnel.",
     impact: [
