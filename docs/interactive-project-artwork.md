@@ -16,15 +16,15 @@ Write one sentence about what the project *does*. Then find a visual system that
 | Sherlock (PII anonymization) | Finds personal data and hides it | A redacted case file plus a magnifying lens | The lens reveals the *type* of each redaction |
 | NextHire (semantic job search) | Matches people to roles by meaning | Job dots in an "embedding space" | Your resume moves; the nearest roles light up |
 | Guardian (disaster relief + blockchain) | Live updates and traceable donations | Alert rings, plus coins dropping onto a chain of blocks | Coins drop from where you point |
-| FAQ Manager (translation + Redis) | One answer in every language, cached | One question that changes language | Moving across switches language; repeats are cache hits |
+| Resolv (AI incident management) | Agents carry an incident from creation to resolution | One ticket moving along a four-stop track | Moving across advances the stage; each agent fills in its audit line |
 
 To find the metaphor, ask three questions:
-- **What is the input?** (a document, a resume, a donation, a question)
-- **What transformation happens?** (masking, matching, recording, translating)
-- **What proves it worked?** (an entity label, a match score, a verified block, a cache hit)
+- **What is the input?** (a document, a resume, a donation, an incident)
+- **What transformation happens?** (masking, matching, recording, resolving)
+- **What proves it worked?** (an entity label, a match score, a verified block, a resolved status)
 
 Make the *proof* the moment the pointer triggers. Each resume bullet can then become a visible detail:
-"reducing DB queries by 50%" becomes a live cache-hit counter.
+"auto-resolves eligible tickets" becomes a status pill that flips to Resolved.
 
 **Rules of thumb**
 - Use one interaction per piece. If it needs instructions, it's too complex.
@@ -126,12 +126,11 @@ so they stay round.
   `row.animate([{ transform: 'translateX(Wpx)' }, { transform: 'none' }], 520)`.
 - Pass per-instance values to keyframes with custom properties: `style={{ '--from-x': '40%' }}`.
 
-**Bands and state machines (FAQ).** Map `x` to one of N bands. On a band change:
-- update a small model (here a cache: miss the first time, hit after that);
-- push to a short log, keeping the last 3 entries;
-- derive a stat (the hit rate).
+**Bands and state machines (Resolv).** Map `x` to one of N bands. On a band change, set the stage and
+derive everything else from it: the status pill, which audit lines are filled in, and how far the
+progress track has run. Keeping one piece of state means the parts can never disagree.
 
-`key={index}` on the headline replays a blur-in keyframe on every change.
+`key={stage}` on the status pill replays its entrance keyframe on every change.
 
 **Ambient depth.** Large faint glyphs or grids, translated slightly opposite the pointer
 (`translate: calc((50% - var(--px)) * .12)`), add parallax at almost no cost.

@@ -45,6 +45,7 @@ const T = {
   background: ok(0.975, 0.012, 85), foreground: ok(0.2, 0.02, 270), card: ok(0.99, 0.006, 85),
   primary: ok(0.66, 0.2, 35), secondary: ok(0.52, 0.2, 262), secondaryForeground: ok(0.99, 0.01, 85),
   muted: ok(0.94, 0.015, 85), mutedForeground: ok(0.48, 0.02, 270), accent: ok(0.9, 0.17, 125), pink: ok(0.82, 0.11, 350),
+  ink: ok(0.16, 0.01, 260), cream: ok(0.975, 0.008, 85), amber: ok(0.8, 0.14, 75), violet: ok(0.66, 0.2, 300),
 };
 const C = {
   ...Object.fromEntries(Object.entries(T).map(([k, v]) => [k, hex(v)])),
@@ -57,6 +58,7 @@ const C = {
   lime2: hex(mix(T.accent, T.secondary, 0.72)),
   person: hex(T.pink), phone: hex(mix(T.secondary, T.card, 0.4)), place: hex(mix(T.primary, T.card, 0.55)),
   date: hex(T.accent), id: hex(mix(T.secondary, T.accent, 0.22)), lensTint: hex(mix(T.accent, T.card, 0.22)),
+  ticket: hex(mix(T.cream, T.ink, 0.06)),
 };
 
 /* ---------- shared helpers ---------- */
@@ -420,92 +422,88 @@ ${coins}`;
   return svg(W, H, "Guardian — live relief updates pulse out while each donation drops onto an open, traceable ledger.", body, css, defs);
 }
 
-/* ---------- 5. FAQ Manager: one question, every language, cached ---------- */
+/* ---------- 5. Resolv: one incident moving through four agents ---------- */
 
-function faq() {
-  const W = 600, H = 380, STEP = 1.8;
-  const LANGS = [
-    { code: "EN", w: 34, lines: ["How do I reset", "my password?"] },
-    { code: "हिन्दी", w: 52, lines: ["मैं अपना पासवर्ड", "कैसे रीसेट करूँ?"] },
-    { code: "ES", w: 32, lines: ["¿Cómo restablezco", "mi contraseña?"] },
-    { code: "FR", w: 32, lines: ["Comment réinitialiser", "mon mot de passe ?"] },
-    { code: "DE", w: 32, lines: ["Wie setze ich mein", "Passwort zurück?"] },
-    { code: "日本語", w: 54, lines: ["パスワードを", "リセットするには？"] },
+function resolv() {
+  const W = 600, H = 380, STEP = 2.2;
+  const STAGES = [
+    { agent: "Triage", status: "Assigned", tone: C.cream, ink: C.ink, note: "Network Ops · on-shift engineer", at: "+0:04" },
+    { agent: "Acknowledge", status: "Acknowledged", tone: C.accent, ink: C.ink, note: "Caller acknowledged · ACK-02", at: "+0:09" },
+    { agent: "Pending", status: "On hold", tone: C.amber, ink: C.ink, note: "Reminder scheduled in 4h", at: "+1h 12m" },
+    { agent: "Resolution", status: "Resolved", tone: C.violet, ink: C.cream, note: "Caller confirmed · auto-resolved", at: "+4h 32m" },
   ];
-  const GAP = 6;
-  const total = LANGS.reduce((s, l) => s + l.w, 0) + GAP * (LANGS.length - 1);
-  let cx = 300 - total / 2;
-  const chips = LANGS.map((l) => {
-    const x = cx;
-    cx += l.w + GAP;
-    return { ...l, x };
-  });
-
-  // Two passes over the six languages: the first pass misses and caches, the second is all hits.
-  const visits = [...LANGS.keys(), ...LANGS.keys()];
-  const n = visits.length;
+  const n = STAGES.length;
   const DUR = n * STEP;
-  const log = [];
-  let hits = 0;
-  const states = visits.map((li, i) => {
-    const hit = i >= LANGS.length;
-    if (hit) hits += 1;
-    log.unshift({ code: LANGS[li].code, hit, ms: hit ? 2 : 140 + ((li * 37) % 70) });
-    return { li, entries: log.slice(0, 3), rate: Math.round((hits / (i + 1)) * 100) };
-  });
-  const fade = 0.012;
-  const slot = (i) => {
-    const a = i / n, b = (i + 1) / n;
-    return animate("opacity", [0, 0, 1, 1, 0, 0], DUR, `keyTimes="0;${f(Math.max(0, a - 0.0001))};${f(a + fade)};${f(b - fade)};${f(b)};1"`);
-  };
+  // One value per stage, switched at each stage boundary.
+  const staged = (attr, values) => animate(attr, values, DUR, `calcMode="discrete" keyTimes="${values.map((_, i) => f(i / n)).join(";")}"`);
+  const per = (fn) => STAGES.map((_, k) => fn(k));
 
-  const stateGroups = states
-    .map((s, i) => {
-      const chip = chips[s.li];
-      const lang = LANGS[s.li];
-      return `<g opacity="0">${slot(i)}
-  <rect x="${f(chip.x)}" y="88" width="${chip.w}" height="22" rx="11" fill="${C.foreground}"/>
-  <text x="${f(chip.x + chip.w / 2)}" y="103" text-anchor="middle" class="t" font-size="10.5" fill="${C.background}">${esc(chip.code)}</text>
-  ${lang.lines.map((line, k) => `<text x="300" y="${158 + k * 33}" text-anchor="middle" class="q" font-size="27" fill="${C.foreground}">${esc(line)}</text>`).join("")}
-  ${s.entries
-    .map((e, k) => {
-      const y = 242 + k * 22;
-      return `<g opacity="${k === 0 ? 1 : 0.5}">
-    <rect x="142" y="${y - 12}" width="40" height="16" rx="4" fill="${e.hit ? C.accent : C.muted}"/>
-    <text x="162" y="${y - 0.5}" text-anchor="middle" class="t" font-size="9" font-weight="800" letter-spacing=".5" fill="${C.foreground}">${e.hit ? "HIT" : "MISS"}</text>
-    <text x="192" y="${y}" class="t" font-size="11" fill="${C.foreground}">${esc(e.code)} · ${e.hit ? "served from Redis" : "translated, then cached"}</text>
-    <text x="458" y="${y}" text-anchor="end" class="t" font-size="11" fill="${C.mutedForeground}">${e.ms} ms</text></g>`;
-    })
-    .join("")}
-</g>`;
-    })
-    .join("");
-  const rates = states.map((s, i) => `<text x="568" y="364" text-anchor="end" class="d" font-size="30" fill="${C.foreground}" opacity="0">${s.rate}%${slot(i)}</text>`).join("");
+  const NODE_X = [112, 237, 362, 487], TRACK_Y = 330;
+  // The lime progress line eases to the next node at the start of each stage.
+  const ease = 0.035;
+  const progressTimes = [0, ...STAGES.slice(1).flatMap((_, k) => [f((k + 1) / n), f((k + 1) / n + ease)]), 1];
+  const progressValues = [NODE_X[0], ...STAGES.slice(1).flatMap((_, k) => [NODE_X[k], NODE_X[k + 1]]), NODE_X[n - 1]];
+  const progress = animate("x2", progressValues, DUR, `keyTimes="${progressTimes.join(";")}"`);
+  const glow = translate(progressTimes.map((_, i) => `${progressValues[i]} ${TRACK_Y}`), DUR, `keyTimes="${progressTimes.join(";")}"`);
 
-  const glyphs = [["A", 40, 190], ["अ", 470, 70], ["Ñ", 520, 300], ["あ", 80, 350], ["ß", 300, 380], ["?", 196, 70]]
-    .map(([g, x, y], i) => `<text x="${x}" y="${y}" class="q drift" style="animation-delay:-${i * 2}s" font-size="110" fill="${C.foreground}" fill-opacity=".08">${g}</text>`)
-    .join("");
-  const css = `.drift{animation:drift 12s ease-in-out infinite}@keyframes drift{50%{transform:translate(6px,-8px)}}${REDUCED()}`;
+  const pills = STAGES.map((s, k) => {
+    const w = f(s.status.length * 6.6 + 22);
+    return `<g opacity="${k === 0 ? 1 : 0}">${staged("opacity", per((j) => (j === k ? 1 : 0)))}
+  <rect x="${f(482 - w)}" y="91" width="${w}" height="20" rx="10" fill="${s.tone}"/>
+  <text x="${f(482 - w / 2)}" y="105" text-anchor="middle" class="t" font-size="10.5" font-weight="700" fill="${s.ink}">${esc(s.status)}</text></g>`;
+  }).join("");
+
+  const rows = STAGES.map((s, i) => {
+    const y = 210 + i * 21;
+    const reached = per((k) => (k >= i ? 1 : 0));
+    return `<g opacity="${i === 0 ? 1 : 0.28}">${staged("opacity", per((k) => (k > i ? 0.6 : k === i ? 1 : 0.28)))}
+  <text x="118" y="${y}" class="t" font-size="11" font-weight="700" fill="${i === 0 ? C.accent : C.cream}">${esc(s.agent)}${staged("fill", per((k) => (k === i ? C.accent : C.cream)))}</text>
+  <text x="206" y="${y}" class="t" font-size="11" fill="${C.cream}" opacity="${i === 0 ? 1 : 0}">${esc(s.note)}${staged("opacity", reached)}</text>
+  <text x="206" y="${y}" class="t" font-size="11" fill="${C.cream}" opacity="${i === 0 ? 0 : 1}">waiting${staged("opacity", reached.map((r) => 1 - r))}</text>
+  <text x="482" y="${y}" text-anchor="end" class="m" font-size="10.5" fill="${C.cream}" fill-opacity=".55" opacity="${i === 0 ? 1 : 0}">${s.at}${staged("opacity", reached)}</text></g>`;
+  }).join("");
+
+  const nodes = STAGES.map((s, i) => {
+    const fill = per((k) => (k >= i ? C.accent : C.ink));
+    const stroke = per((k) => (k >= i ? C.accent : C.cream));
+    return `<circle cx="${NODE_X[i]}" cy="${TRACK_Y}" r="7" fill="${fill[0]}" stroke="${stroke[0]}" stroke-opacity="${i === 0 ? 1 : 0.55}" stroke-width="2.5">${staged("fill", fill)}${staged("stroke", stroke)}${staged("stroke-opacity", per((k) => (k >= i ? 1 : 0.55)))}</circle>
+<circle cx="${NODE_X[i]}" cy="${TRACK_Y}" r="13" fill="${C.accent}" fill-opacity=".28" opacity="${i === 0 ? 1 : 0}">${staged("opacity", per((k) => (k === i ? 1 : 0)))}</circle>
+<text x="${NODE_X[i]}" y="${TRACK_Y + 28}" text-anchor="middle" class="t" font-size="9.5" letter-spacing="1.5" fill="${C.cream}" fill-opacity="${i === 0 ? 1 : 0.55}">${esc(s.agent.toUpperCase())}${staged("fill-opacity", per((k) => (k === i ? 1 : 0.55)))}</text>`;
+  }).join("");
+
+  const css = `.blink{animation:blink 2.4s ease-in-out infinite}@keyframes blink{50%{opacity:.35}}${REDUCED()}`;
+  const defs = `
+<pattern id="rvgrid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="${C.cream}" stroke-opacity=".08"/></pattern>
+<radialGradient id="rvglow"><stop offset="0" stop-color="${C.accent}" stop-opacity=".22"/><stop offset="1" stop-color="${C.accent}" stop-opacity="0"/></radialGradient>
+<filter id="deep" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#000" flood-opacity=".55"/></filter>`;
 
   const body = `
-<rect width="${W}" height="${H}" fill="${C.rose}"/>
-${glyphs}
-<text x="30" y="48" class="s" font-size="28" fill="${C.foreground}">faq<tspan fill="${C.primary}">.</tspan></text>
-<g transform="rotate(-3 300 190)">
-  <rect x="120" y="66" width="360" height="244" rx="13" fill="${C.card}" filter="url(#shadow)"/>
-  ${chips.map((c) => `<rect x="${f(c.x)}" y="88" width="${c.w}" height="22" rx="11" fill="none" stroke="${C.foreground}" stroke-opacity=".18"/><text x="${f(c.x + c.w / 2)}" y="103" text-anchor="middle" class="t" font-size="10.5" fill="${C.foreground}">${esc(c.code)}</text>`).join("")}
-  <line x1="142" y1="218" x2="458" y2="218" stroke="${C.foreground}" stroke-opacity=".12"/>
-  ${stateGroups}
+<rect width="${W}" height="${H}" fill="${C.ink}"/>
+<rect width="${W}" height="${H}" fill="url(#rvgrid)"/>
+<g>${glow}<circle r="190" fill="url(#rvglow)"/></g>
+<text x="30" y="50" class="d" font-size="26" fill="${C.cream}">resol<tspan fill="${C.accent}">v</tspan></text>
+<rect x="448" y="27" width="126" height="26" rx="13" fill="${C.cream}" fill-opacity=".05" stroke="${C.cream}" stroke-opacity=".14"/>
+<circle class="blink" cx="464" cy="40" r="4" fill="${C.accent}"/>
+<text x="476" y="44" class="t" font-size="11" fill="${C.cream}">4 agents online</text>
+<g transform="rotate(-1.5 300 182)">
+  <rect x="96" y="76" width="408" height="210" rx="14" fill="${C.ticket}" stroke="${C.cream}" stroke-opacity=".12" filter="url(#deep)"/>
+  <text x="118" y="105" class="m" font-size="10.5" letter-spacing=".6" fill="${C.cream}" fill-opacity=".55">INC-2041 · P2</text>
+  ${pills}
+  <text x="118" y="144" class="t" font-size="22" font-weight="700" fill="${C.cream}">VPN drops right after</text>
+  <text x="118" y="171" class="t" font-size="22" font-weight="700" fill="${C.cream}">a password reset</text>
+  <line x1="118" y1="188" x2="482" y2="188" stroke="${C.cream}" stroke-opacity=".12"/>
+  ${rows}
 </g>
-<text x="568" y="328" text-anchor="end" class="t" font-size="9.5" font-weight="700" letter-spacing="1.5" fill="${C.foreground}">CACHE HIT RATE</text>
-${rates}`;
-  return svg(W, H, "FAQ Manager — one question cycling through six languages; repeat requests are served from the Redis cache.", body, css);
+<line x1="${NODE_X[0]}" y1="${TRACK_Y}" x2="${NODE_X[n - 1]}" y2="${TRACK_Y}" stroke="${C.cream}" stroke-opacity=".14" stroke-width="3" stroke-linecap="round"/>
+<line x1="${NODE_X[0]}" y1="${TRACK_Y}" x2="${NODE_X[0]}" y2="${TRACK_Y}" stroke="${C.accent}" stroke-width="3" stroke-linecap="round">${progress}</line>
+${nodes}`;
+  return svg(W, H, "Resolv — one incident moves through the triage, acknowledgement, pending and resolution agents, filling in its audit trail.", body, css, defs);
 }
 
 /* ---------- write ---------- */
 
 mkdirSync(OUT, { recursive: true });
-const files = { "header.svg": header(), "sherlock.svg": sherlock(), "nexthire.svg": nexthire(), "guardian.svg": guardian(), "faq.svg": faq() };
+const files = { "header.svg": header(), "sherlock.svg": sherlock(), "nexthire.svg": nexthire(), "guardian.svg": guardian(), "resolv.svg": resolv() };
 for (const [name, content] of Object.entries(files)) {
   writeFileSync(join(OUT, name), content);
   console.log(`${name.padEnd(14)} ${(Buffer.byteLength(content) / 1024).toFixed(1)} KB`);

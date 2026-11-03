@@ -43,10 +43,10 @@ I build fast, thoughtful React products. Right now that's real-time promotions a
       <p><a href="https://github.com/ShreYansHSachan11/GUARDIAN">Code</a></p>
     </td>
     <td width="50%" valign="top">
-      <a href="https://faqfrontend-shreyanshsachan11s-projects.vercel.app/"><img src="assets/faq.svg" width="100%" alt="FAQ Manager: one question in six languages, served from cache"></a>
-      <h4>FAQ Manager · multilingual FAQs</h4>
-      <p>Automatic translation via the Google Translate API, with Redis caching that cut database queries by 50%.</p>
-      <p><a href="https://faqfrontend-shreyanshsachan11s-projects.vercel.app/">Live</a> · <a href="https://github.com/ShreYansHSachan11/FAQbackend">Code</a></p>
+      <a href="https://resolv-amber.vercel.app/"><img src="assets/resolv.svg" width="100%" alt="Resolv: one incident moving through four AI agents, filling in its audit trail"></a>
+      <h4>Resolv · AI incident management</h4>
+      <p>Four agents on FastAPI with Gemini or Claude triage, acknowledge, follow up on and auto-resolve support tickets, with a live dashboard and full audit trail.</p>
+      <p><a href="https://resolv-amber.vercel.app/">Live</a> · <a href="https://github.com/ShreYansHSachan11/Ai-Incident-Orchestrator">Code</a></p>
     </td>
   </tr>
 </table>

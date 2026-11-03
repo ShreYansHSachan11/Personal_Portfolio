@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="380" viewBox="0 0 600 380" role="img" aria-labelledby="title">
+<title id="title">Resolv — one incident moves through the triage, acknowledgement, pending and resolution agents, filling in its audit trail.</title>
+<style>
+.d{font-family:'Arial Black','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900}
+.s{font-family:Georgia,'Times New Roman',serif;font-style:italic}
+.q{font-family:Georgia,'Times New Roman',serif}
+.t{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+.m{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace}.blink{animation:blink 2.4s ease-in-out infinite}@keyframes blink{50%{opacity:.35}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<defs>
+<clipPath id="frame"><rect width="600" height="380" rx="18"/></clipPath>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#12161f" flood-opacity=".22"/></filter>
+<filter id="lift" x="-20%" y="-40%" width="140%" height="200%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#12161f" flood-opacity=".18"/></filter>
+
+<pattern id="rvgrid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#f9f6f1" stroke-opacity=".08"/></pattern>
+<radialGradient id="rvglow"><stop offset="0" stop-color="#c4f16a" stop-opacity=".22"/><stop offset="1" stop-color="#c4f16a" stop-opacity="0"/></radialGradient>
+<filter id="deep" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#000" flood-opacity=".55"/></filter>
+</defs>
+<g clip-path="url(#frame)">
+<rect width="600" height="380" fill="#0b0d12"/>
+<rect width="600" height="380" fill="url(#rvgrid)"/>
+<g><animateTransform attributeName="transform" type="translate" values="112 330;112 330;237 330;237 330;362 330;362 330;487 330;487 330" dur="8.8s" repeatCount="indefinite" keyTimes="0;0.25;0.29;0.5;0.54;0.75;0.79;1"/><circle r="190" fill="url(#rvglow)"/></g>
+<text x="30" y="50" class="d" font-size="26" fill="#f9f6f1">resol<tspan fill="#c4f16a">v</tspan></text>
+<rect x="448" y="27" width="126" height="26" rx="13" fill="#f9f6f1" fill-opacity=".05" stroke="#f9f6f1" stroke-opacity=".14"/>
+<circle class="blink" cx="464" cy="40" r="4" fill="#c4f16a"/>
+<text x="476" y="44" class="t" font-size="11" fill="#f9f6f1">4 agents online</text>
+<g transform="rotate(-1.5 300 182)">
+  <rect x="96" y="76" width="408" height="210" rx="14" fill="#15181c" stroke="#f9f6f1" stroke-opacity=".12" filter="url(#deep)"/>
+  <text x="118" y="105" class="m" font-size="10.5" letter-spacing=".6" fill="#f9f6f1" fill-opacity=".55">INC-2041 · P2</text>
+  <g opacity="1"><animate attributeName="opacity" values="1;0;0;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/>
+  <rect x="407.2" y="91" width="74.8" height="20" rx="10" fill="#f9f6f1"/>
+  <text x="444.6" y="105" text-anchor="middle" class="t" font-size="10.5" font-weight="700" fill="#0b0d12">Assigned</text></g><g opacity="0"><animate attributeName="opacity" values="0;1;0;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/>
+  <rect x="380.8" y="91" width="101.2" height="20" rx="10" fill="#c4f16a"/>
+  <text x="431.4" y="105" text-anchor="middle" class="t" font-size="10.5" font-weight="700" fill="#0b0d12">Acknowledged</text></g><g opacity="0"><animate attributeName="opacity" values="0;0;1;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/>
+  <rect x="413.8" y="91" width="68.2" height="20" rx="10" fill="#f2af48"/>
+  <text x="447.9" y="105" text-anchor="middle" class="t" font-size="10.5" font-weight="700" fill="#0b0d12">On hold</text></g><g opacity="0"><animate attributeName="opacity" values="0;0;0;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/>
+  <rect x="407.2" y="91" width="74.8" height="20" rx="10" fill="#a76ef8"/>
+  <text x="444.6" y="105" text-anchor="middle" class="t" font-size="10.5" font-weight="700" fill="#f9f6f1">Resolved</text></g>
+  <text x="118" y="144" class="t" font-size="22" font-weight="700" fill="#f9f6f1">VPN drops right after</text>
+  <text x="118" y="171" class="t" font-size="22" font-weight="700" fill="#f9f6f1">a password reset</text>
+  <line x1="118" y1="188" x2="482" y2="188" stroke="#f9f6f1" stroke-opacity=".12"/>
+  <g opacity="1"><animate attributeName="opacity" values="1;0.6;0.6;0.6" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/>
+  <text x="118" y="210" class="t" font-size="11" font-weight="700" fill="#c4f16a">Triage<animate attributeName="fill" values="#c4f16a;#f9f6f1;#f9f6f1;#f9f6f1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="206" y="210" class="t" font-size="11" fill="#f9f6f1" opacity="1">Network Ops · on-shift engineer<animate attributeName="opacity" values="1;1;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="206" y="210" class="t" font-size="11" fill="#f9f6f1" opacity="0">waiting<animate attributeName="opacity" values="0;0;0;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="482" y="210" text-anchor="end" class="m" font-size="10.5" fill="#f9f6f1" fill-opacity=".55" opacity="1">+0:04<animate attributeName="opacity" values="1;1;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text></g><g opacity="0.28"><animate attributeName="opacity" values="0.28;1;0.6;0.6" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/>
+  <text x="118" y="231" class="t" font-size="11" font-weight="700" fill="#f9f6f1">Acknowledge<animate attributeName="fill" values="#f9f6f1;#c4f16a;#f9f6f1;#f9f6f1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="206" y="231" class="t" font-size="11" fill="#f9f6f1" opacity="0">Caller acknowledged · ACK-02<animate attributeName="opacity" values="0;1;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="206" y="231" class="t" font-size="11" fill="#f9f6f1" opacity="1">waiting<animate attributeName="opacity" values="1;0;0;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="482" y="231" text-anchor="end" class="m" font-size="10.5" fill="#f9f6f1" fill-opacity=".55" opacity="0">+0:09<animate attributeName="opacity" values="0;1;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text></g><g opacity="0.28"><animate attributeName="opacity" values="0.28;0.28;1;0.6" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/>
+  <text x="118" y="252" class="t" font-size="11" font-weight="700" fill="#f9f6f1">Pending<animate attributeName="fill" values="#f9f6f1;#f9f6f1;#c4f16a;#f9f6f1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="206" y="252" class="t" font-size="11" fill="#f9f6f1" opacity="0">Reminder scheduled in 4h<animate attributeName="opacity" values="0;0;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="206" y="252" class="t" font-size="11" fill="#f9f6f1" opacity="1">waiting<animate attributeName="opacity" values="1;1;0;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="482" y="252" text-anchor="end" class="m" font-size="10.5" fill="#f9f6f1" fill-opacity=".55" opacity="0">+1h 12m<animate attributeName="opacity" values="0;0;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text></g><g opacity="0.28"><animate attributeName="opacity" values="0.28;0.28;0.28;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/>
+  <text x="118" y="273" class="t" font-size="11" font-weight="700" fill="#f9f6f1">Resolution<animate attributeName="fill" values="#f9f6f1;#f9f6f1;#f9f6f1;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="206" y="273" class="t" font-size="11" fill="#f9f6f1" opacity="0">Caller confirmed · auto-resolved<animate attributeName="opacity" values="0;0;0;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="206" y="273" class="t" font-size="11" fill="#f9f6f1" opacity="1">waiting<animate attributeName="opacity" values="1;1;1;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text>
+  <text x="482" y="273" text-anchor="end" class="m" font-size="10.5" fill="#f9f6f1" fill-opacity=".55" opacity="0">+4h 32m<animate attributeName="opacity" values="0;0;0;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text></g>
+</g>
+<line x1="112" y1="330" x2="487" y2="330" stroke="#f9f6f1" stroke-opacity=".14" stroke-width="3" stroke-linecap="round"/>
+<line x1="112" y1="330" x2="112" y2="330" stroke="#c4f16a" stroke-width="3" stroke-linecap="round"><animate attributeName="x2" values="112;112;237;237;362;362;487;487" dur="8.8s" repeatCount="indefinite" keyTimes="0;0.25;0.29;0.5;0.54;0.75;0.79;1"/></line>
+<circle cx="112" cy="330" r="7" fill="#c4f16a" stroke="#c4f16a" stroke-opacity="1" stroke-width="2.5"><animate attributeName="fill" values="#c4f16a;#c4f16a;#c4f16a;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/><animate attributeName="stroke" values="#c4f16a;#c4f16a;#c4f16a;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/><animate attributeName="stroke-opacity" values="1;1;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></circle>
+<circle cx="112" cy="330" r="13" fill="#c4f16a" fill-opacity=".28" opacity="1"><animate attributeName="opacity" values="1;0;0;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></circle>
+<text x="112" y="358" text-anchor="middle" class="t" font-size="9.5" letter-spacing="1.5" fill="#f9f6f1" fill-opacity="1">TRIAGE<animate attributeName="fill-opacity" values="1;0.55;0.55;0.55" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text><circle cx="237" cy="330" r="7" fill="#0b0d12" stroke="#f9f6f1" stroke-opacity="0.55" stroke-width="2.5"><animate attributeName="fill" values="#0b0d12;#c4f16a;#c4f16a;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/><animate attributeName="stroke" values="#f9f6f1;#c4f16a;#c4f16a;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/><animate attributeName="stroke-opacity" values="0.55;1;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></circle>
+<circle cx="237" cy="330" r="13" fill="#c4f16a" fill-opacity=".28" opacity="0"><animate attributeName="opacity" values="0;1;0;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></circle>
+<text x="237" y="358" text-anchor="middle" class="t" font-size="9.5" letter-spacing="1.5" fill="#f9f6f1" fill-opacity="0.55">ACKNOWLEDGE<animate attributeName="fill-opacity" values="0.55;1;0.55;0.55" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text><circle cx="362" cy="330" r="7" fill="#0b0d12" stroke="#f9f6f1" stroke-opacity="0.55" stroke-width="2.5"><animate attributeName="fill" values="#0b0d12;#0b0d12;#c4f16a;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/><animate attributeName="stroke" values="#f9f6f1;#f9f6f1;#c4f16a;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/><animate attributeName="stroke-opacity" values="0.55;0.55;1;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></circle>
+<circle cx="362" cy="330" r="13" fill="#c4f16a" fill-opacity=".28" opacity="0"><animate attributeName="opacity" values="0;0;1;0" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></circle>
+<text x="362" y="358" text-anchor="middle" class="t" font-size="9.5" letter-spacing="1.5" fill="#f9f6f1" fill-opacity="0.55">PENDING<animate attributeName="fill-opacity" values="0.55;0.55;1;0.55" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text><circle cx="487" cy="330" r="7" fill="#0b0d12" stroke="#f9f6f1" stroke-opacity="0.55" stroke-width="2.5"><animate attributeName="fill" values="#0b0d12;#0b0d12;#0b0d12;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/><animate attributeName="stroke" values="#f9f6f1;#f9f6f1;#f9f6f1;#c4f16a" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/><animate attributeName="stroke-opacity" values="0.55;0.55;0.55;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></circle>
+<circle cx="487" cy="330" r="13" fill="#c4f16a" fill-opacity=".28" opacity="0"><animate attributeName="opacity" values="0;0;0;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></circle>
+<text x="487" y="358" text-anchor="middle" class="t" font-size="9.5" letter-spacing="1.5" fill="#f9f6f1" fill-opacity="0.55">RESOLUTION<animate attributeName="fill-opacity" values="0.55;0.55;0.55;1" dur="8.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;0.75"/></text></g>
+</svg>
