@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-labelledby="title">
-<title id="title">Shreyansh Sachan — Code meets curiosity. Frontend developer at Pinntag.</title>
+<title id="title">Shreyansh Sachan. Code meets curiosity. Frontend developer at Pinntag.</title>
 <style>
 .d{font-family:'Arial Black','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:900}
 .s{font-family:Georgia,'Times New Roman',serif;font-style:italic}
@@ -36,9 +36,9 @@
 <g class="rise">
   <circle cx="70" cy="86" r="5" fill="#f3562e"/>
   <text x="84" y="91" class="t" font-size="14" font-weight="700" letter-spacing="2" fill="#12161f">FRONTEND DEVELOPER @ PINNTAG</text>
-  <text x="62" y="176" class="d" font-size="80" fill="#12161f">Shreyansh<tspan fill="#f3562e">.</tspan></text>
-  <text x="64" y="246" class="s" font-size="70" fill="#1f5ed9">Code meets</text>
-  <text x="62" y="316" class="d" font-size="68" fill="#12161f">curiosity.</text>
+  <text x="62" y="170" class="d" font-size="76" fill="#12161f">Shreyansh</text>
+  <text x="62" y="244" class="d" font-size="76" fill="#12161f">Sachan<tspan fill="#f3562e">.</tspan></text>
+  <text x="64" y="300" class="s" font-size="38" fill="#1f5ed9">Code meets <tspan fill="#12161f">curiosity.</tspan></text>
 </g>
 
 <g transform="translate(900 172)"><g class="float-a">

@@ -156,9 +156,9 @@ ${REDUCED(".flow{stroke-dashoffset:0}.rise{opacity:1}")}`;
 <g class="rise">
   <circle cx="70" cy="86" r="5" fill="${C.primary}"/>
   <text x="84" y="91" class="t" font-size="14" font-weight="700" letter-spacing="2" fill="${C.foreground}">FRONTEND DEVELOPER @ PINNTAG</text>
-  <text x="62" y="176" class="d" font-size="80" fill="${C.foreground}">Shreyansh<tspan fill="${C.primary}">.</tspan></text>
-  <text x="64" y="246" class="s" font-size="70" fill="${C.secondary}">Code meets</text>
-  <text x="62" y="316" class="d" font-size="68" fill="${C.foreground}">curiosity.</text>
+  <text x="62" y="170" class="d" font-size="76" fill="${C.foreground}">Shreyansh</text>
+  <text x="62" y="244" class="d" font-size="76" fill="${C.foreground}">Sachan<tspan fill="${C.primary}">.</tspan></text>
+  <text x="64" y="300" class="s" font-size="38" fill="${C.secondary}">Code meets <tspan fill="${C.foreground}">curiosity.</tspan></text>
 </g>
 
 <g transform="translate(900 172)"><g class="float-a">
@@ -184,7 +184,7 @@ ${REDUCED(".flow{stroke-dashoffset:0}.rise{opacity:1}")}`;
   <rect x="-60" y="334" width="1320" height="54" fill="${C.accent}" stroke="${C.foreground}" stroke-width="3"/>
   <g transform="translate(0 370)"><g class="marquee"><g>${items}</g><g transform="translate(${period} 0)">${items}</g></g></g>
 </g>`;
-  return svg(W, H, "Shreyansh Sachan — Code meets curiosity. Frontend developer at Pinntag.", body, css, defs);
+  return svg(W, H, "Shreyansh Sachan. Code meets curiosity. Frontend developer at Pinntag.", body, css, defs);
 }
 
 /* ---------- 2. Sherlock: redaction lens ---------- */
