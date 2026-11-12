@@ -84,7 +84,7 @@ export const projects = [
 
 export const experience = [
   {
-    company: "Pinntag", role: "Frontend Developer", period: "Jan 2026 – Present", kind: "Experience",
+    company: "Pinntag", role: "Frontend Developer", period: "Nov 2025 – Present", kind: "Experience",
     points: [
       "Built scalable React features for a real-time promotions platform.",
       "Integrated POS systems and Stripe subscription billing, coordinating payment workflows and subscription state across the application.",
@@ -92,7 +92,7 @@ export const experience = [
     ],
   },
   {
-    company: "Alankaeon", role: "Frontend Developer Intern", period: "Jun 2025 – Nov 2025", kind: "Experience",
+    company: "Alankaeon", role: "Frontend Developer Intern", period: "May 2025 – Oct 2025", kind: "Experience",
     points: [
       "Refactored Redux state management, reducing load time by 25%.",
       "Integrated API endpoints with RTK Query caching, cutting API calls by 40%.",
